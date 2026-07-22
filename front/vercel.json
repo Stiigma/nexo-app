@@ -3,7 +3,21 @@
   "framework": "vite",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    {
+      "src": "/api/v1/(.*)",
+      "dest": "${BACKEND_ORIGIN}/api/v1/$1",
+      "env": ["BACKEND_ORIGIN"],
+      "transforms": [
+        {
+          "type": "request.headers",
+          "op": "set",
+          "target": { "key": "ngrok-skip-browser-warning" },
+          "args": "1"
+        }
+      ]
+    },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

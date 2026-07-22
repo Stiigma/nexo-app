@@ -94,6 +94,16 @@ datos Neon.
 ## Progress
 
 - 2026-07-07: Plan creado. Pendiente delegar a nexo-infra.
+- 2026-07-22: Reproducido el fallo de Vercel `vite: command not found` en un
+  checkout limpio ejecutado desde la raíz del repositorio. La instalación y el
+  build limpios dentro de `front/` pasan, por lo que la corrección es configurar
+  Vercel con Root Directory `front` y retirar el override heredado `vite build`.
+  El runbook quedó actualizado; QA aprobó la preparación local y seguridad
+  aprobó esta remediación acotada. El cambio externo y el redeploy siguen
+  pendientes de confirmación explícita del usuario.
+- 2026-07-22: El redeploy compiló y quedó Ready, pero la aceptación detectó el
+  interstitial gratuito `ERR_NGROK_6024` en tráfico de navegador. Se aprobó el
+  proxy same-origin Vercel→ngrok para cubrir API, cookies y fotos nativas.
 
 ## Decision Log
 
@@ -104,6 +114,12 @@ datos Neon.
   con React/Vite y soporta dominios custom en free tier.
 - 2026-07-07: Azure Blob para backups porque ya está configurado para fotos
   (mismo storage account, reutilizar container o crear uno nuevo).
+- 2026-07-22: Mantener `front/vercel.json` como configuración canónica y no
+  duplicar `package.json`, Vite ni el lockfile en la raíz para ocultar un Root
+  Directory incorrecto. Vercel debe instalar y construir desde `front/`.
+- 2026-07-22: Enrutar `/api/v1/*` por Vercel con upstream fijo
+  `BACKEND_ORIGIN` e inyectar server-side `ngrok-skip-browser-warning`; el
+  navegador no debe llamar directamente al dominio ngrok.
 
 ## Risks
 
@@ -132,3 +148,6 @@ datos Neon.
 - ADR: `docs/adr/ADR-2026-07-07-db-backup-strategy.md`
 - Handoff: `harness/control/handoffs/HOFF-2026-07-07-cicd-deploy-domain.md`
 - Runbook: `harness/control/runbooks/RUNBOOK-NEXO-0031-operations.md`
+- Architecture evaluation: `harness/control/decisions/DEC-NEXO-0031-vercel-ngrok-same-origin-proxy.md`
+- Proxy ADR: `docs/adr/ADR-2026-07-22-vercel-ngrok-same-origin-proxy.md`
+- Proxy handoff: `harness/control/handoffs/HOFF-2026-07-22-vercel-ngrok-same-origin-proxy.md`

@@ -11,6 +11,7 @@ const CORS_DOMAINS = [
   "http://localhost:5173",
   "https://nexo-app-git-main-nexoensshop.vercel.app",
   "https://nexo-1tmh1wc25-nexoensshop.vercel.app",
+  "https://nexo-app-blond.vercel.app",
 ].join(",");
 
 const text = readFileSync(INFRA_ENV, "utf8");
