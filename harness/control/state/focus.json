@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0036",
+  "status": "active",
+  "updatedAt": "2026-07-16T00:13:51-07:00",
+  "maxAgeHours": 168,
+  "objective": "Reproduce the authenticated catalog 500 responses on the port-5173 runner, correct the verified root cause if necessary, then complete protected-photo visual acceptance and close the remediated NEXO-0033 risk.",
+  "nextAction": "After the user signs in on the controlled localhost:5173 page, reload /admin/inventory, capture the exact server-side catalog failure, add a regression test before any correction, and then resume cards/detail/lightbox/filter/photo verification.",
+  "constraints": [
+    "Do not introduce, request, copy, log, or persist real credentials or signed redirect URLs in reports.",
+    "Do not change database records, Azure blobs/container settings, provider credentials, or deployment state during visual QA.",
+    "Do not commit, push, deploy, or change an external environment without explicit user confirmation.",
+    "Preserve the authenticated gateway and private-container boundary; never make photos public to simplify verification.",
+    "Keep NEXO-0037 parallel work intact and avoid unrelated product/config edits.",
+    "Create new evidence; never overwrite historical reports or security/QA records."
+  ],
+  "acceptanceCriteria": [
+    "Inventory cards render protected photos after authentication.",
+    "Detail modal and lightbox render the same stable photo gateway correctly.",
+    "The 39 PRICE_PENDING items remain visible and retain pending-price behavior.",
+    "Filtering and ordering do not break photo rendering.",
+    "Successful evidence supports closeout of NEXO-0036 and the expiring-SAS risk in NEXO-0033."
+  ],
+  "verification": [
+    "Run the compact context compiler before work and stop on any source conflict.",
+    "Perform authenticated visual QA at /admin/inventory without transmitting credentials.",
+    "Confirm browser-visible image requests use /api/v1/media/photos/:photoId/content and do not persist Azure SAS values.",
+    "If code changes become necessary, rerun targeted tests plus backend/frontend builds before acceptance.",
+    "Create a new visual-QA report and only then evaluate NEXO-0036/NEXO-0033 closeout."
+  ],
+  "expectedReport": "harness/control/reports/2026-07-16/NEXO-0036-authenticated-catalog-reproduction-session-005.md",
+  "sources": {
+    "tasks": "harness/control/tasks.md",
+    "plan": "harness/control/plans/NEXO-0036-authorized-media-access-gateway.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-15-authorized-media-access-gateway.md",
+    "latestReport": "harness/control/reports/2026-07-16/NEXO-0036-authorized-media-access-gateway-session-004.md"
+  },
+  "sourceHashes": {
+    "taskRow": "82cb4b5d1d049170a8e147917cad95fb6e1bce0082f802bd7751d615428e26b7",
+    "plan": "64147f5a37ccfdce3163b13a9ee925914a743618ee91cb26910874287767280a",
+    "handoff": "4e82aad6ea61e0ced4efdec7b96c27ddf892da6a714f9205ce02f7c951ecc010",
+    "latestReport": "09cbc7abcb31f61da1a7b0ae348c1c27031b1ddbb70e7022a06fdc14324c2b0e"
+  }
+}

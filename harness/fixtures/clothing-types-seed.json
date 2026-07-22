@@ -1,0 +1,230 @@
+{
+  "source": "Shopify Product Taxonomy (MIT) — curated for Nexo 18-30 target",
+  "source_url": "https://github.com/Shopify/product-taxonomy",
+  "sections": [
+    {
+      "name_en": "Activewear",
+      "name_es": "Ropa deportiva",
+      "display_order": 1,
+      "types": [
+        { "name_en": "T-Shirts", "name_es": "Playeras deportivas" },
+        { "name_en": "Tank Tops", "name_es": "Tank Tops" },
+        { "name_en": "Crop Tops", "name_es": "Crop Tops" },
+        { "name_en": "Base Layer Tops", "name_es": "Camisetas térmicas" },
+        { "name_en": "Hoodies", "name_es": "Hoodies" },
+        { "name_en": "Sweatshirts", "name_es": "Sudaderas" },
+        { "name_en": "Track Jackets", "name_es": "Chaquetas deportivas" },
+        { "name_en": "Joggers", "name_es": "Joggers" },
+        { "name_en": "Leggings", "name_es": "Leggings" },
+        { "name_en": "Sweatpants", "name_es": "Pants deportivos" },
+        { "name_en": "Tights", "name_es": "Mallas / Tights" },
+        { "name_en": "Track Pants", "name_es": "Track Pants" },
+        { "name_en": "Training Pants", "name_es": "Pants de entrenamiento" },
+        { "name_en": "Wind Pants", "name_es": "Pants cortaviento" },
+        { "name_en": "Shorts", "name_es": "Shorts deportivos" },
+        { "name_en": "Sports Bras", "name_es": "Bras deportivos" },
+        { "name_en": "Jackets", "name_es": "Chaquetas deportivas" },
+        { "name_en": "Vests", "name_es": "Chalecos deportivos" },
+        { "name_en": "Leotards", "name_es": "Leotardos" },
+        { "name_en": "Unitards", "name_es": "Enterizos deportivos" }
+      ]
+    },
+    {
+      "name_en": "Tops",
+      "name_es": "Playeras y blusas",
+      "display_order": 2,
+      "types": [
+        { "name_en": "T-Shirts", "name_es": "Playeras / Camisetas" },
+        { "name_en": "Tank Tops", "name_es": "Camisetas sin mangas" },
+        { "name_en": "Crop Tops", "name_es": "Crop Tops" },
+        { "name_en": "Blouses", "name_es": "Blusas" },
+        { "name_en": "Bodysuits", "name_es": "Bodysuits / Bodies" },
+        { "name_en": "Cardigans", "name_es": "Cárdigans" },
+        { "name_en": "Corset Tops", "name_es": "Tops corset" },
+        { "name_en": "Hoodies", "name_es": "Hoodies" },
+        { "name_en": "Overshirts", "name_es": "Camisas oversize" },
+        { "name_en": "Polos", "name_es": "Polos" },
+        { "name_en": "Shirts (Dress)", "name_es": "Camisas formales" },
+        { "name_en": "Shirts (Henley)", "name_es": "Camisas Henley" },
+        { "name_en": "Sweaters", "name_es": "Suéteres" },
+        { "name_en": "Sweatshirts", "name_es": "Sudaderas" },
+        { "name_en": "Tunics", "name_es": "Túnicas" }
+      ]
+    },
+    {
+      "name_en": "Pants",
+      "name_es": "Pantalones",
+      "display_order": 3,
+      "types": [
+        { "name_en": "Cargo Pants", "name_es": "Pantalones cargo" },
+        { "name_en": "Chinos", "name_es": "Chinos" },
+        { "name_en": "Harem Pants", "name_es": "Pantalones harem" },
+        { "name_en": "Jeans", "name_es": "Jeans / Mezclilla" },
+        { "name_en": "Jeggings", "name_es": "Jeggings" },
+        { "name_en": "Joggers", "name_es": "Joggers" },
+        { "name_en": "Leggings", "name_es": "Leggings" },
+        { "name_en": "Palazzo Pants", "name_es": "Pantalones palazzo" },
+        { "name_en": "Trousers", "name_es": "Pantalones de vestir" }
+      ]
+    },
+    {
+      "name_en": "Shorts",
+      "name_es": "Shorts",
+      "display_order": 4,
+      "types": [
+        { "name_en": "Bermudas", "name_es": "Bermudas" },
+        { "name_en": "Cargo Shorts", "name_es": "Shorts cargo" },
+        { "name_en": "Chino Shorts", "name_es": "Shorts chino" },
+        { "name_en": "Denim Shorts", "name_es": "Shorts de mezclilla" },
+        { "name_en": "Jegging Shorts", "name_es": "Shorts jegging" },
+        { "name_en": "Jogger Shorts", "name_es": "Shorts jogger" },
+        { "name_en": "Legging Shorts", "name_es": "Shorts leggings" },
+        { "name_en": "Short Trousers", "name_es": "Shorts de vestir" }
+      ]
+    },
+    {
+      "name_en": "Dresses & Skirts",
+      "name_es": "Vestidos y faldas",
+      "display_order": 5,
+      "types": [
+        { "name_en": "Dresses", "name_es": "Vestidos" },
+        { "name_en": "Skirts", "name_es": "Faldas" },
+        { "name_en": "Skorts", "name_es": "Faldas-short" }
+      ]
+    },
+    {
+      "name_en": "Outerwear",
+      "name_es": "Chamarras y abrigos",
+      "display_order": 6,
+      "types": [
+        { "name_en": "Blazers", "name_es": "Blazers / Sacos" },
+        { "name_en": "Bolero Jackets", "name_es": "Chaquetas bolero" },
+        { "name_en": "Bomber Jackets", "name_es": "Bomber jackets" },
+        { "name_en": "Capes", "name_es": "Capas" },
+        { "name_en": "Overcoats", "name_es": "Abrigos" },
+        { "name_en": "Parkas", "name_es": "Parkas" },
+        { "name_en": "Pea Coats", "name_es": "Pea Coats" },
+        { "name_en": "Ponchos", "name_es": "Ponchos" },
+        { "name_en": "Puffer Jackets", "name_es": "Chamarras puffer" },
+        { "name_en": "Rain Coats", "name_es": "Impermeables" },
+        { "name_en": "Sport Jackets", "name_es": "Chaquetas sport" },
+        { "name_en": "Trench Coats", "name_es": "Gabardinas" },
+        { "name_en": "Trucker Jackets", "name_es": "Chaquetas trucker" },
+        { "name_en": "Varsity Jackets", "name_es": "Chaquetas varsity" },
+        { "name_en": "Windbreakers", "name_es": "Rompevientos" },
+        { "name_en": "Wrap Coats", "name_es": "Abrigos wrap" },
+        { "name_en": "Vests", "name_es": "Chalecos" },
+        { "name_en": "Snow Pants", "name_es": "Pants para nieve" },
+        { "name_en": "Snow Bibs", "name_es": "Overoles para nieve" },
+        { "name_en": "Snow Suits", "name_es": "Trajes para nieve" }
+      ]
+    },
+    {
+      "name_en": "Swimwear",
+      "name_es": "Trajes de baño",
+      "display_order": 7,
+      "types": [
+        { "name_en": "Boardshorts", "name_es": "Boardshorts" },
+        { "name_en": "Classic Bikinis", "name_es": "Bikinis clásicos" },
+        { "name_en": "Burkinis", "name_es": "Burkinis" },
+        { "name_en": "Cover Ups", "name_es": "Salidas de baño" },
+        { "name_en": "One-Piece Swimsuits", "name_es": "Trajes de baño enteros" },
+        { "name_en": "Rash Guards", "name_es": "Rash Guards" },
+        { "name_en": "Swim Boxers", "name_es": "Boxers de natación" },
+        { "name_en": "Swim Briefs", "name_es": "Briefs de natación" },
+        { "name_en": "Swim Dresses", "name_es": "Vestidos de baño" },
+        { "name_en": "Swim Shorts", "name_es": "Shorts de natación" },
+        { "name_en": "Swim Skirts", "name_es": "Faldas de baño" },
+        { "name_en": "Swim Leggings", "name_es": "Leggings de natación" },
+        { "name_en": "Surf Tops", "name_es": "Surf Tops" },
+        { "name_en": "Tankinis", "name_es": "Tankinis" }
+      ]
+    },
+    {
+      "name_en": "Lingerie & Underwear",
+      "name_es": "Lencería y ropa interior",
+      "display_order": 8,
+      "types": [
+        { "name_en": "Bras", "name_es": "Bras / Sostenes" },
+        { "name_en": "Babydolls", "name_es": "Babydolls" },
+        { "name_en": "Bodysuits", "name_es": "Bodysuits lencería" },
+        { "name_en": "Camisoles", "name_es": "Camisoles" },
+        { "name_en": "Corsets & Bustiers", "name_es": "Corsets y bustiers" },
+        { "name_en": "Hosiery", "name_es": "Medias / Pantimedias" },
+        { "name_en": "Lingerie Sets", "name_es": "Conjuntos de lencería" },
+        { "name_en": "Shapewear", "name_es": "Fajas" },
+        { "name_en": "Women's Underpants", "name_es": "Panties / Calzones" },
+        { "name_en": "Women's Undershirts", "name_es": "Camisetas interiores" },
+        { "name_en": "Men's Underwear", "name_es": "Ropa interior masculina" },
+        { "name_en": "Jock Straps", "name_es": "Jock straps" }
+      ]
+    },
+    {
+      "name_en": "Sleepwear",
+      "name_es": "Pijamas y ropa de casa",
+      "display_order": 9,
+      "types": [
+        { "name_en": "Loungewear", "name_es": "Ropa de casa / Lounge" },
+        { "name_en": "Nightgowns", "name_es": "Camisones" },
+        { "name_en": "Onesies", "name_es": "Onesies / Monos" },
+        { "name_en": "Pajamas", "name_es": "Pijamas" },
+        { "name_en": "Robes", "name_es": "Batas" }
+      ]
+    },
+    {
+      "name_en": "Suits",
+      "name_es": "Trajes",
+      "display_order": 10,
+      "types": [
+        { "name_en": "Pant Suits", "name_es": "Trajes de pantalón" },
+        { "name_en": "Skirt Suits", "name_es": "Trajes de falda" },
+        { "name_en": "Tuxedos", "name_es": "Tuxedos / Esmoquin" }
+      ]
+    },
+    {
+      "name_en": "One-Pieces",
+      "name_es": "Monos y enterizos",
+      "display_order": 11,
+      "types": [
+        { "name_en": "Bodysuits", "name_es": "Bodysuits / Bodies" },
+        { "name_en": "Jumpsuits", "name_es": "Jumpsuits / Overoles" },
+        { "name_en": "Rompers", "name_es": "Rompers / Monos cortos" }
+      ]
+    },
+    {
+      "name_en": "Socks",
+      "name_es": "Calcetines",
+      "display_order": 12,
+      "types": [
+        { "name_en": "Ankle Socks", "name_es": "Calcetines tobilleros" },
+        { "name_en": "Athletic Socks", "name_es": "Calcetines deportivos" },
+        { "name_en": "Crew Socks", "name_es": "Calcetines crew" },
+        { "name_en": "Dress Socks", "name_es": "Calcetines de vestir" },
+        { "name_en": "Footie Socks", "name_es": "Calcetines invisibles" },
+        { "name_en": "Heel Socks", "name_es": "Calcetines taloneros" },
+        { "name_en": "Knee Socks", "name_es": "Calcetines a la rodilla" },
+        { "name_en": "Sneaker Socks", "name_es": "Calcetines para tennis" },
+        { "name_en": "Toe Socks", "name_es": "Calcetines de dedos" }
+      ]
+    },
+    {
+      "name_en": "Shoes",
+      "name_es": "Calzado",
+      "display_order": 13,
+      "types": [
+        { "name_en": "Sneakers", "name_es": "Sneakers / Tennis" },
+        { "name_en": "Athletic Shoes", "name_es": "Calzado deportivo" },
+        { "name_en": "Boots", "name_es": "Botas" },
+        { "name_en": "Sandals", "name_es": "Sandalias" },
+        { "name_en": "Flats", "name_es": "Zapatos planos" },
+        { "name_en": "Heels", "name_es": "Tacones" },
+        { "name_en": "Slippers", "name_es": "Pantuflas" }
+      ]
+    }
+  ],
+  "totals": {
+    "sections": 13,
+    "types": 149,
+    "target_age": "18-30"
+  }
+}

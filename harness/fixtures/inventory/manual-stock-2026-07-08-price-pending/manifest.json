@@ -1,0 +1,362 @@
+{
+  "fixture_id": "manual-stock-2026-07-08-price-pending",
+  "created_at": "2026-07-08",
+  "status": "price_pending",
+  "item_count": 39,
+  "canonical_photo_count": 39,
+  "source_photo_count": 26,
+  "notes": "Prepared fixture only. Do not import until the app supports the real PRICE_PENDING enum/status.",
+  "items": [
+    {
+      "internal_code": "NX-0018",
+      "path": "items/NX-0018-pants-the-north-face-negro/item.md",
+      "photo": "items/NX-0018-pants-the-north-face-negro/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item1"
+      }
+    },
+    {
+      "internal_code": "NX-0019",
+      "path": "items/NX-0019-nike-jacket-hoodie-gris-claro/item.md",
+      "photo": "items/NX-0019-nike-jacket-hoodie-gris-claro/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item2"
+      }
+    },
+    {
+      "internal_code": "NX-0020",
+      "path": "items/NX-0020-camisa-rvca-gris/item.md",
+      "photo": "items/NX-0020-camisa-rvca-gris/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item3"
+      }
+    },
+    {
+      "internal_code": "NX-0021",
+      "path": "items/NX-0021-sudadera-nike-gris/item.md",
+      "photo": "items/NX-0021-sudadera-nike-gris/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item4"
+      }
+    },
+    {
+      "internal_code": "NX-0022",
+      "path": "items/NX-0022-rompeviento-nike-azul/item.md",
+      "photo": "items/NX-0022-rompeviento-nike-azul/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item5"
+      }
+    },
+    {
+      "internal_code": "NX-0023",
+      "path": "items/NX-0023-sudadera-nike-gris-claro/item.md",
+      "photo": "items/NX-0023-sudadera-nike-gris-claro/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item6"
+      }
+    },
+    {
+      "internal_code": "NX-0024",
+      "path": "items/NX-0024-camisa-nike-running-negra/item.md",
+      "photo": "items/NX-0024-camisa-nike-running-negra/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item7"
+      }
+    },
+    {
+      "internal_code": "NX-0025",
+      "path": "items/NX-0025-guayabera-negra/item.md",
+      "photo": "items/NX-0025-guayabera-negra/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item8"
+      }
+    },
+    {
+      "internal_code": "NX-0026",
+      "path": "items/NX-0026-camisa-manga-corta-negra/item.md",
+      "photo": "items/NX-0026-camisa-manga-corta-negra/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item9"
+      }
+    },
+    {
+      "internal_code": "NX-0027",
+      "path": "items/NX-0027-pants-nike-negro/item.md",
+      "photo": "items/NX-0027-pants-nike-negro/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item10-15"
+      }
+    },
+    {
+      "internal_code": "NX-0028",
+      "path": "items/NX-0028-pants-nike-azul-marino/item.md",
+      "photo": "items/NX-0028-pants-nike-azul-marino/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item10-15"
+      }
+    },
+    {
+      "internal_code": "NX-0029",
+      "path": "items/NX-0029-pants-nike-verde/item.md",
+      "photo": "items/NX-0029-pants-nike-verde/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item10-15"
+      }
+    },
+    {
+      "internal_code": "NX-0030",
+      "path": "items/NX-0030-pants-nike-beige/item.md",
+      "photo": "items/NX-0030-pants-nike-beige/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item10-15"
+      }
+    },
+    {
+      "internal_code": "NX-0031",
+      "path": "items/NX-0031-pants-nike-azul-con-logo/item.md",
+      "photo": "items/NX-0031-pants-nike-azul-con-logo/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item10-15"
+      }
+    },
+    {
+      "internal_code": "NX-0032",
+      "path": "items/NX-0032-pants-nike-guinda/item.md",
+      "photo": "items/NX-0032-pants-nike-guinda/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item10-15"
+      }
+    },
+    {
+      "internal_code": "NX-0033",
+      "path": "items/NX-0033-producto-item16-20-pieza-1-beige/item.md",
+      "photo": "items/NX-0033-producto-item16-20-pieza-1-beige/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item16-20"
+      }
+    },
+    {
+      "internal_code": "NX-0034",
+      "path": "items/NX-0034-producto-item16-20-pieza-2-crema/item.md",
+      "photo": "items/NX-0034-producto-item16-20-pieza-2-crema/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item16-20"
+      }
+    },
+    {
+      "internal_code": "NX-0035",
+      "path": "items/NX-0035-producto-item16-20-pieza-3-gris/item.md",
+      "photo": "items/NX-0035-producto-item16-20-pieza-3-gris/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item16-20"
+      }
+    },
+    {
+      "internal_code": "NX-0036",
+      "path": "items/NX-0036-pants-item16-20-gris/item.md",
+      "photo": "items/NX-0036-pants-item16-20-gris/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item16-20"
+      }
+    },
+    {
+      "internal_code": "NX-0037",
+      "path": "items/NX-0037-short-item16-20-negro/item.md",
+      "photo": "items/NX-0037-short-item16-20-negro/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item16-20"
+      }
+    },
+    {
+      "internal_code": "NX-0038",
+      "path": "items/NX-0038-nike-hoodie-gris/item.md",
+      "photo": "items/NX-0038-nike-hoodie-gris/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item21"
+      }
+    },
+    {
+      "internal_code": "NX-0039",
+      "path": "items/NX-0039-adidas-campus-azul-con-caja/item.md",
+      "photo": "items/NX-0039-adidas-campus-azul-con-caja/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item22"
+      }
+    },
+    {
+      "internal_code": "NX-0040",
+      "path": "items/NX-0040-gorra-lakers-amarilla-izquierda/item.md",
+      "photo": "items/NX-0040-gorra-lakers-amarilla-izquierda/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item23-24"
+      }
+    },
+    {
+      "internal_code": "NX-0041",
+      "path": "items/NX-0041-gorra-lakers-amarilla-derecha/item.md",
+      "photo": "items/NX-0041-gorra-lakers-amarilla-derecha/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item23-24"
+      }
+    },
+    {
+      "internal_code": "NX-0042",
+      "path": "items/NX-0042-jersey-celtics-larry-bird-verde/item.md",
+      "photo": "items/NX-0042-jersey-celtics-larry-bird-verde/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item25"
+      }
+    },
+    {
+      "internal_code": "NX-0043",
+      "path": "items/NX-0043-playera-bucks-giannis-negra/item.md",
+      "photo": "items/NX-0043-playera-bucks-giannis-negra/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item26"
+      }
+    },
+    {
+      "internal_code": "NX-0044",
+      "path": "items/NX-0044-gorra-the-north-face-negra-izquierda/item.md",
+      "photo": "items/NX-0044-gorra-the-north-face-negra-izquierda/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item27-28"
+      }
+    },
+    {
+      "internal_code": "NX-0045",
+      "path": "items/NX-0045-gorra-the-north-face-negra-derecha/item.md",
+      "photo": "items/NX-0045-gorra-the-north-face-negra-derecha/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item27-28"
+      }
+    },
+    {
+      "internal_code": "NX-0046",
+      "path": "items/NX-0046-tenis-reebok-blancos-con-caja/item.md",
+      "photo": "items/NX-0046-tenis-reebok-blancos-con-caja/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item29"
+      }
+    },
+    {
+      "internal_code": "NX-0047",
+      "path": "items/NX-0047-adidas-samba-negros-con-caja/item.md",
+      "photo": "items/NX-0047-adidas-samba-negros-con-caja/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item30"
+      }
+    },
+    {
+      "internal_code": "NX-0048",
+      "path": "items/NX-0048-nike-set-hoodie-gris/item.md",
+      "photo": "items/NX-0048-nike-set-hoodie-gris/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item31-32"
+      }
+    },
+    {
+      "internal_code": "NX-0049",
+      "path": "items/NX-0049-nike-set-pantalon-gris/item.md",
+      "photo": "items/NX-0049-nike-set-pantalon-gris/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item31-32"
+      }
+    },
+    {
+      "internal_code": "NX-0050",
+      "path": "items/NX-0050-gorra-diamondbacks-amarilla/item.md",
+      "photo": "items/NX-0050-gorra-diamondbacks-amarilla/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item33"
+      }
+    },
+    {
+      "internal_code": "NX-0051",
+      "path": "items/NX-0051-gorra-padres-rosa/item.md",
+      "photo": "items/NX-0051-gorra-padres-rosa/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item34"
+      }
+    },
+    {
+      "internal_code": "NX-0052",
+      "path": "items/NX-0052-gorra-suns-naranja-y-morada/item.md",
+      "photo": "items/NX-0052-gorra-suns-naranja-y-morada/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item35"
+      }
+    },
+    {
+      "internal_code": "NX-0053",
+      "path": "items/NX-0053-short-jordan-blanco/item.md",
+      "photo": "items/NX-0053-short-jordan-blanco/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item36"
+      }
+    },
+    {
+      "internal_code": "NX-0054",
+      "path": "items/NX-0054-gorra-suns-naranja/item.md",
+      "photo": "items/NX-0054-gorra-suns-naranja/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item37"
+      }
+    },
+    {
+      "internal_code": "NX-0055",
+      "path": "items/NX-0055-gorra-lakers-negra-izquierda/item.md",
+      "photo": "items/NX-0055-gorra-lakers-negra-izquierda/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item38-39"
+      }
+    },
+    {
+      "internal_code": "NX-0056",
+      "path": "items/NX-0056-gorra-lakers-negra-derecha/item.md",
+      "photo": "items/NX-0056-gorra-lakers-negra-derecha/photos/main.jpeg",
+      "status": "price_pending",
+      "source": {
+        "previous_path": "newstorage/item38-39"
+      }
+    }
+  ]
+}

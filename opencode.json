@@ -1,0 +1,280 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "openai/gpt-5.6-sol",
+  "default_agent": "nexo",
+  "subagent_depth": 1,
+  "share": "disabled",
+  "autoupdate": false,
+  "plugin": [
+    "./.opencode/plugins/nexo-productivity.mjs",
+    "./.opencode/plugins/nexo-budget-guard.mjs",
+    "./.opencode/plugins/isyte-ops.mjs",
+    [
+      "@plannotator/opencode@0.23.1",
+      {
+        "workflow": "manual"
+      }
+    ]
+  ],
+  "tool_output": {
+    "max_lines": 800,
+    "max_bytes": 32768
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "tail_turns": 4,
+    "preserve_recent_tokens": 24000,
+    "reserved": 12000
+  },
+  "agent": {
+    "build": {
+      "disable": true
+    },
+    "plan": {
+      "disable": true
+    },
+    "nexo": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "medium",
+      "options": { "textVerbosity": "low" },
+      "tools": {
+        "chrome-devtools_*": true,
+        "github_*": true,
+        "context7_*": true
+      }
+    },
+    "nexo-resume": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "medium",
+      "options": { "textVerbosity": "low" }
+    },
+    "nexo-plan": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "high",
+      "options": { "textVerbosity": "low" }
+    },
+    "nexo-build": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "high",
+      "options": { "textVerbosity": "low" }
+    },
+    "nexo-spec": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "high",
+      "options": { "textVerbosity": "low" }
+    },
+    "nexo-design": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "high",
+      "options": { "textVerbosity": "low" }
+    },
+    "nexo-qa": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "high",
+      "options": { "textVerbosity": "low" }
+    },
+    "nexo-infra": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "high",
+      "options": { "textVerbosity": "low" }
+    },
+    "nexo-security": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "xhigh",
+      "options": { "textVerbosity": "low" }
+    },
+    "summary": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "medium",
+      "options": { "textVerbosity": "low" }
+    },
+    "compaction": {
+      "model": "openai/gpt-5.6-sol",
+      "variant": "medium",
+      "options": { "textVerbosity": "low" }
+    }
+  },
+  "mcp": {
+    "chrome-devtools": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "chrome-devtools-mcp@1.6.0",
+        "--browser-url=http://127.0.0.1:9222",
+        "--no-usage-statistics",
+        "--no-performance-crux",
+        "--redact-network-headers"
+      ],
+      "environment": {
+        "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": "1"
+      },
+      "timeout": 20000,
+      "enabled": true
+    },
+    "github": {
+      "type": "local",
+      "command": [
+        "docker",
+        "run",
+        "-i",
+        "--rm",
+        "--pull=never",
+        "--read-only",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "-p",
+        "127.0.0.1:8085:8085",
+        "-e",
+        "GITHUB_OAUTH_CALLBACK_PORT",
+        "-e",
+        "GITHUB_TOOLSETS",
+        "-e",
+        "GITHUB_READ_ONLY",
+        "-e",
+        "GITHUB_LOCKDOWN_MODE",
+        "-e",
+        "GITHUB_OAUTH_SCOPES",
+        "ghcr.io/github/github-mcp-server@sha256:6f48d5cc9e9fe978315419cb68860fc605886b4250bc907339efaa7e96e41ce9"
+      ],
+      "environment": {
+        "GITHUB_OAUTH_CALLBACK_PORT": "8085",
+        "GITHUB_TOOLSETS": "context,repos,issues,pull_requests",
+        "GITHUB_READ_ONLY": "true",
+        "GITHUB_LOCKDOWN_MODE": "true",
+        "GITHUB_OAUTH_SCOPES": "repo,read:org"
+      },
+      "timeout": 30000,
+      "enabled": true
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "timeout": 20000,
+      "enabled": true
+    }
+  },
+  "tools": {
+    "chrome-devtools_*": false,
+    "github_*": false,
+    "context7_*": false
+  },
+  "command": {
+    "plannotator-last": {
+      "description": "Annotate the last assistant message in the local Plannotator UI.",
+      "agent": "nexo",
+      "template": "Open local visual annotation for the last assistant message."
+    },
+    "plannotator-annotate": {
+      "description": "Annotate a project-relative Markdown, text, or HTML file; folders and URLs are denied.",
+      "agent": "nexo",
+      "template": "Open local visual annotation for `$ARGUMENTS`. Reject every URL and keep the artifact on this machine."
+    },
+    "plannotator-review": {
+      "description": "Review current local changes in Plannotator; remote PR URLs are denied.",
+      "agent": "nexo",
+      "template": "Open local visual review for the current worktree using `$ARGUMENTS`. Reject every remote URL."
+    },
+    "nexo:resume": {
+      "description": "Resume from the Nexo control plane.",
+      "agent": "nexo",
+      "template": "Run `node .opencode/scripts/build-session-context.mjs`. On success, read only AGENTS.md and .opencode/state/session-context.json, then summarize the focused task, constraints, next action, and evidence paths. If generation fails or the packet is insufficient for the decision, use the full resume fallback listed in AGENTS.md."
+    },
+    "nexo:bind": {
+      "description": "Bind this session's budget ledger to an explicit task ID.",
+      "agent": "nexo",
+      "template": "Confirm the session budget binding requested in `$ARGUMENTS`. Do not perform implementation work."
+    },
+    "nexo:doctor": {
+      "description": "Check control-plane continuity and obvious inconsistencies.",
+      "agent": "nexo",
+      "template": "Read AGENTS.md and harness/control/README.md, then verify tasks.md, state/CURRENT.md, state/NEXT.md, latest reports, closeouts, journal, agents, skills, templates, indexes, and OpenCode adapters are internally consistent. Report findings first."
+    },
+    "nexo:plan": {
+      "description": "Create a non-mutating implementation plan or handoff, then optionally delegate execution to nexo-build or nexo-infra.",
+      "agent": "nexo",
+      "template": "Orchestrate planning through harness/control/agents/nexo-plan.md and the active control workflow. Produce or update a plan and create a handoff when another specialist should execute. Only nexo may delegate, using harness/control/agents/README.md."
+    },
+    "nexo:spec": {
+      "description": "Update requirements, stories, acceptance criteria, or traceability.",
+      "agent": "nexo",
+      "template": "Use harness/control/agents/nexo-spec.md and harness/control/skills/nexo-requirements-trace.md. Keep NEXO_PROJECT.md as product source and docs/spec/ as the implementable requirements layer."
+    },
+    "nexo:design": {
+      "description": "Create UX/UI specs for screens, flows, states, forms, and accessibility.",
+      "agent": "nexo",
+      "template": "Use harness/control/agents/nexo-design.md and harness/control/skills/nexo-design-spec.md. Produce design specs that can be handed to nexo-build and nexo-qa."
+    },
+    "nexo:build": {
+      "description": "Implement code or config from a handoff or diagnosis.",
+      "agent": "nexo",
+      "template": "Use harness/control/agents/nexo-build.md. For a governed task, run `node harness/control/scripts/control-engine.mjs gate --task TASK-ID --name build` before delegation. Confirm a handoff or investigation exists, implement scoped changes, verify, and update manifest evidence. Run the implemented transition check before changing status to implemented."
+    },
+    "nexo:qa": {
+      "description": "Review quality, acceptance, data integrity, and release readiness through the Nexo orchestrator.",
+      "agent": "nexo",
+      "template": "For a governed task, first run `node harness/control/scripts/control-engine.mjs gate --task TASK-ID --name qa`. Orchestrate review through harness/control/agents/nexo-qa.md and harness/control/skills/nexo-qa-review.md. Check requirements, acceptance criteria, UX states, tests, data integrity, security handoff, and release readiness. Route corrections from nexo; the QA specialist must not delegate."
+    },
+    "nexo:security": {
+      "description": "Review secrets, auth, permissions, privacy, sensitive data, and exposure.",
+      "agent": "nexo",
+      "template": "For a governed task, first run `node harness/control/scripts/control-engine.mjs gate --task TASK-ID --name security`. Use harness/control/agents/nexo-security.md and harness/control/skills/nexo-security-review.md. Record findings, mitigations, residual risk, and decision."
+    },
+    "nexo:infra": {
+      "description": "Execute infrastructure work with strict guardrails.",
+      "agent": "nexo",
+      "template": "Use harness/control/agents/nexo-infra.md and harness/control/skills/nexo-infra-guardrails.md. Require ADRs for durable conventions and QA/security review for CI/CD, Kubernetes, deploy, or exposure changes."
+    },
+    "nexo:handoff": {
+      "description": "Create an implementation-ready handoff.",
+      "agent": "nexo",
+      "template": "Use harness/control/skills/nexo-handoff.md and harness/control/templates/handoff.md. Include objective, context, source docs, files, steps, verification, risks, acceptance criteria, receiving agent, and required gates."
+    },
+    "nexo:close": {
+      "description": "Close a task with evidence and live-state updates.",
+      "agent": "nexo",
+      "template": "Use harness/control/skills/nexo-close-task.md. For a governed task, update manifest evidence and run `node harness/control/scripts/control-engine.mjs transition --task TASK-ID --to closed`; do not change live status unless it returns ok. Then update README.md, tasks.md, state/CURRENT.md, state/NEXT.md, and append the journal."
+    },
+    "fiad:resume": {
+      "description": "Resume from the FIAD canonical ecosystem context.",
+      "agent": "fiad-plan",
+      "template": "Read AGENTS.md, harness/control/README.md, harness/control/WORKFLOW.md, harness/control/tasks.md, today's journal, harness/control/state/CURRENT.md, harness/control/state/NEXT.md, harness/control/ecosystem/overview.md, harness/control/ecosystem/integrations.md, harness/control/ecosystem/local-dotnet-service-playbook.md, harness/control/ecosystem/credential-map.md, and the affected Project Profile under harness/control/projects/. Summarize current FIAD task state, project map, risks, and evidence locations."
+    },
+    "fiad:doctor": {
+      "description": "Check FIAD control-plane continuity and obvious inconsistencies.",
+      "agent": "fiad-qa",
+      "template": "Read AGENTS.md and harness/control/README.md, then verify FIAD tasks, plans, handoffs, reports, closeouts, journal, ecosystem docs, Project Profiles, state/workspace-map.json, state/project-policy.json, OpenCode adapters, and internal links. Report findings first."
+    },
+    "fiad:plan": {
+      "description": "Create a non-mutating FIAD implementation plan or handoff.",
+      "agent": "fiad-plan",
+      "template": "Use harness/control/agents/fiad-plan.md and the active control workflow. Read ecosystem docs and affected Project Profiles, then produce or update a FIAD plan and create a handoff when another agent should execute."
+    },
+    "fiad:build": {
+      "description": "Implement FIAD code or config from a handoff or diagnosis.",
+      "agent": "fiad-build",
+      "template": "Use harness/control/agents/fiad-build.md. Confirm a handoff or investigation exists for non-trivial work, implement scoped changes, verify, and record report, implementation, and closeout as required. Start from ecosystem docs and affected Project Profiles."
+    },
+    "fiad:infra": {
+      "description": "Execute FIAD infrastructure work with strict guardrails.",
+      "agent": "fiad-infra",
+      "template": "Use harness/control/agents/fiad-infra.md. Read ecosystem docs, workspace-map.json, and affected Project Profiles. Require ADRs for durable conventions and QA/security review for Docker, Kubernetes, CI/CD, deploy, routing, or exposure changes."
+    },
+    "fiad:security": {
+      "description": "Review FIAD secrets, auth, permissions, privacy, sensitive data, and exposure.",
+      "agent": "fiad-security",
+      "template": "Use harness/control/agents/fiad-security.md. Read ecosystem/credential-map.md and affected Project Profiles. Record findings, mitigations, residual risk, and decision. Do not write real secrets."
+    },
+    "isyte:resume": {
+      "description": "Compatibility alias for fiad:resume. Prefer fiad:resume.",
+      "agent": "fiad-plan",
+      "template": "Compatibility alias: use fiad:resume. Read the FIAD canonical ecosystem context under harness/control/ecosystem/ and harness/control/projects/."
+    },
+    "isyte:doctor": {
+      "description": "Compatibility alias for fiad:doctor. Prefer fiad:doctor.",
+      "agent": "fiad-qa",
+      "template": "Compatibility alias: use fiad:doctor. Verify FIAD control-plane continuity, Project Profiles, state JSON, adapters, reports, and closeouts."
+    }
+  }
+}

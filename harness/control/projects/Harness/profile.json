@@ -1,0 +1,39 @@
+{
+  "id": "harness",
+  "name": "Harness FIAD",
+  "canonicalName": "FIAD Harness",
+  "role": "local-infrastructure-and-operational-control-plane",
+  "status": "canonical-context",
+  "source": {
+    "legacyHarness": "/home/otomi/isyte-backup/Isyte/harness",
+    "canonicalControl": "/home/otomi/nexo/develoment/harness/control",
+    "opencodeAdapters": "/home/otomi/nexo/develoment/.opencode"
+  },
+  "documents": {
+    "profile": "harness/control/projects/Harness/profile.md",
+    "systemSummary": "harness/control/projects/Harness/system-summary.md",
+    "endpoints": "harness/control/projects/Harness/endpoints.md",
+    "domainModel": "harness/control/projects/Harness/domain-model.md",
+    "codeMap": "harness/control/projects/Harness/code-map.md",
+    "integrations": "harness/control/projects/Harness/integrations.md",
+    "localRunbook": "harness/control/projects/Harness/local-runbook.md",
+    "securityAuth": "harness/control/projects/Harness/security-auth.md"
+  },
+  "localRoutes": {
+    "cef": "http://localhost/cef",
+    "hu": "http://localhost/hu",
+    "sal": "http://localhost/sal",
+    "traefik": "http://localhost:8080"
+  },
+  "criticalFiles": [
+    "harness/control/state/workspace-map.json",
+    "harness/control/state/project-policy.json",
+    "harness/control/ecosystem/overview.md",
+    "harness/control/ecosystem/integrations.md",
+    "harness/control/ecosystem/credential-map.md",
+    ".opencode/plugins/isyte-ops.mjs",
+    ".opencode/lib/isyte-ops.cjs",
+    "opencode.json"
+  ],
+  "lastInventoried": "2026-07-08"
+}

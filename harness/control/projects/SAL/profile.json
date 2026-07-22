@@ -1,0 +1,59 @@
+{
+  "id": "sal",
+  "name": "SAL / Salidas y Autorizaciones",
+  "canonicalName": "Salidas y Autorizaciones",
+  "role": "cef-consuming-dotnet-service-with-drive-documents",
+  "status": "canonical-context",
+  "source": {
+    "backend": "/home/otomi/isyte-backup/Isyte/repos/SAL/SIPA-SAL",
+    "frontend": "/home/otomi/isyte-backup/Isyte/repos/SAL/Front_SIPA-SAL",
+    "harness": "/home/otomi/isyte-backup/Isyte/harness"
+  },
+  "documents": {
+    "profile": "harness/control/projects/SAL/profile.md",
+    "systemSummary": "harness/control/projects/SAL/system-summary.md",
+    "endpoints": "harness/control/projects/SAL/endpoints.md",
+    "domainModel": "harness/control/projects/SAL/domain-model.md",
+    "codeMap": "harness/control/projects/SAL/code-map.md",
+    "integrations": "harness/control/projects/SAL/integrations.md",
+    "localRunbook": "harness/control/projects/SAL/local-runbook.md",
+    "securityAuth": "harness/control/projects/SAL/security-auth.md"
+  },
+  "localRoutes": {
+    "base": "http://localhost/sal",
+    "api": "http://localhost/sal/api",
+    "swagger": "http://localhost/sal/swagger"
+  },
+  "criticalVariables": [
+    "POSTGRES_HOST",
+    "POSTGRES_PORT",
+    "POSTGRES_DB",
+    "POSTGRES_USER",
+    "POSTGRES_PASSWORD",
+    "URL_CE_API",
+    "AUTH_SERVER_BASE_URL",
+    "AUTH_SERVER_TOKEN_ENDPOINT",
+    "AUTH_SERVER_CLIENT_ID",
+    "AUTH_SERVER_CLIENT_SECRET",
+    "Jwt__Issuer",
+    "Jwt__Audience",
+    "Jwt__Key",
+    "GOOGLE_DRIVE_SERVICE_ACCOUNT_KEY_PATH",
+    "GOOGLE_DRIVE_APPLICATION_NAME",
+    "GOOGLE_DRIVE_FOLDER_ID_SOLICITUDES",
+    "GOOGLE_DRIVE_FOLDER_ID_REPORTES",
+    "GOOGLE_DRIVE_FOLDER_ID_SEGUROS_FACULTATIVOS",
+    "GOOGLE_DRIVE_FOLDER_ID_INVITACIONES",
+    "GOOGLE_DRIVE_FOLDER_ID_ENCUADREPRO",
+    "GOOGLE_DRIVE_FOLDER_ID_ACTIVIDADES",
+    "GOOGLE_DRIVE_FOLDER_RAIZ"
+  ],
+  "dependsOn": [
+    "CEF",
+    "Google Drive",
+    "PostgreSQL",
+    "Harness"
+  ],
+  "lastInventoried": "2026-07-08"
+}
+

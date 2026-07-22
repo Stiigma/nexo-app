@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/tui.json",
+  "theme": "opencode",
+  "plugin": [
+    "./.opencode/tui/nexo-status.tsx"
+  ],
+  "attention": {
+    "enabled": true,
+    "notifications": true,
+    "sound": true,
+    "volume": 0.25
+  }
+}

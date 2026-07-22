@@ -1,0 +1,9 @@
+{
+  "name": "Nexo",
+  "short_name": "Nexo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#101820",
+  "icons": []
+}

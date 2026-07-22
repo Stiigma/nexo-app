@@ -1,0 +1,30 @@
+{
+  "projectDisplayName": "FIAD",
+  "taskPrefix": "FIAD",
+  "agentPrefix": "fiad",
+  "timezone": "America/Tijuana",
+  "canonicalContextPaths": [
+    "harness/control/ecosystem",
+    "harness/control/projects"
+  ],
+  "legacySourcePaths": [
+    "/home/otomi/isyte-backup/Isyte/harness/memory",
+    "/home/otomi/isyte-backup/Isyte/harness/control",
+    "/home/otomi/isyte-backup/Isyte/repos"
+  ],
+  "sensitiveFilePolicy": {
+    "doNotOpenWithoutExplicitAuthorization": [
+      "**/.env",
+      "**/*.env",
+      "**/*.sql",
+      "**/*.xlsx",
+      "**/*.pdf",
+      "**/*credential*",
+      "**/*credencial*",
+      "**/*secret*",
+      "**/Secrets/**",
+      "**/traefik/users"
+    ],
+    "writePolicy": "Use placeholders and variable names only. Never write real passwords, tokens, connection strings, PDF contents, XLSX contents, SQL dumps, service account JSON, or credential hashes."
+  }
+}

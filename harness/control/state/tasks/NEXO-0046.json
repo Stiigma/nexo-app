@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0046",
+  "status": "closed",
+  "updatedAt": "2026-07-18T20:15:00-07:00",
+  "requirements": {
+    "architectureDecision": true,
+    "dependencyApproval": false,
+    "migrationPlan": false,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": false
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0046-structured-control-engine.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-18-structured-control-engine.md",
+    "investigation": null,
+    "architectureDecision": "harness/control/plans/NEXO-0046-structured-control-engine.md",
+    "dependencyApproval": null,
+    "migrationPlan": null,
+    "report": "harness/control/reports/2026-07-18/NEXO-0046-structured-control-engine-session-003.md",
+    "implementation": "harness/control/implementations/IMPL-NEXO-0046-structured-control-engine.md",
+    "qa": "harness/control/reports/2026-07-18/NEXO-0046-structured-control-engine-qa.md",
+    "security": "harness/control/security/SEC-NEXO-0046-structured-control-engine.md",
+    "closeout": "harness/control/closeouts/NEXO-0046-structured-control-engine.md",
+    "externalApproval": null
+  },
+  "verification": [
+    "node --test .opencode/tests/control-engine.test.js",
+    "node --test .opencode/tests/*.test.js",
+    "node .opencode/scripts/build-session-context.mjs",
+    "node harness/control/scripts/control-engine.mjs gate --task NEXO-0046 --name build",
+    "opencode debug config",
+    "graphify update ."
+  ]
+}

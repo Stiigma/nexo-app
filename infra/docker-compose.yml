@@ -1,0 +1,66 @@
+name: nexo-local
+
+services:
+  nexo-postgres:
+    image: postgres:16-alpine
+    container_name: nexo-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nexo
+      POSTGRES_USER: nexo_app
+      POSTGRES_PASSWORD: LT39iKW0nPeXRO48UMdjKbL5fcBbH9
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - nexo_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexo_app -d nexo"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  nexo-api:
+    build:
+      context: ../back
+    container_name: nexo-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Local dev: DATABASE_URL comes from NEXO_DATABASE_URL (infra/.env) and
+      # points at the local nexo-postgres compose service. NODE_ENV, PORT and
+      # the rest of the backend vars are imported from env_file (.env).
+      # For Fase 1 production, override NEXO_DATABASE_URL with Neon and set
+      # NODE_ENV=production (e.g. via a separate prod env file).
+      DATABASE_URL: ${NEXO_DATABASE_URL}
+    depends_on:
+      nexo-postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3001:3000"
+    healthcheck:
+      # Check if the API server is accepting TCP connections on port 3000.
+      # wget --spider returns 0 if server responds (any status code).
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/api/v1/auth/check-email?email=health@check.local || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  nexo-ngrok:
+    image: ngrok/ngrok:latest
+    container_name: nexo-ngrok
+    restart: unless-stopped
+    # Only start when explicitly requested: `docker compose up --profile tunnel`
+    # Avoids crash-loops on local dev when NGROK_AUTHTOKEN is empty.
+    profiles: ["tunnel"]
+    command: ["http", "nexo-api:3000"]
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    ports:
+      # Local ngrok dashboard — bind to loopback only, never expose publicly.
+      - "127.0.0.1:4040:4040"
+    depends_on:
+      - nexo-api
+
+volumes:
+  nexo_postgres_data:

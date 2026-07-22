@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0048",
+  "status": "closed",
+  "updatedAt": "2026-07-18T12:36:00-07:00",
+  "requirements": {
+    "architectureDecision": true,
+    "dependencyApproval": true,
+    "migrationPlan": false,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": false
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0048-architecture-dependency-selection-skills.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-18-architecture-dependency-selection-skills.md",
+    "investigation": null,
+    "architectureDecision": "harness/control/decisions/NEXO-0048-architecture-selection.md",
+    "dependencyApproval": "harness/control/decisions/NEXO-0048-dependency-selection.md",
+    "migrationPlan": null,
+    "report": "harness/control/reports/2026-07-18/NEXO-0048-architecture-dependency-selection-skills-session-004.md",
+    "implementation": "harness/control/implementations/IMPL-NEXO-0048-architecture-dependency-selection-skills.md",
+    "qa": "harness/control/reports/2026-07-18/NEXO-0048-architecture-dependency-selection-skills-qa-004.md",
+    "security": "harness/control/security/SEC-NEXO-0048-architecture-dependency-selection-skills-review-004.md",
+    "closeout": "harness/control/closeouts/NEXO-0048-architecture-dependency-selection-skills.md",
+    "externalApproval": null
+  },
+  "verification": [
+    "node --test .opencode/tests/decision-skills.test.js",
+    "node --test .opencode/tests/control-engine.test.js",
+    "node --test .opencode/tests/*.test.js",
+    "opencode debug config",
+    "opencode debug skill",
+    "opencode debug agent nexo-build",
+    "opencode debug agent nexo-infra",
+    "node .opencode/scripts/build-session-context.mjs",
+    "graphify update ."
+  ]
+}

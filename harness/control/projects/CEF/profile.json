@@ -1,0 +1,52 @@
+{
+  "id": "cef",
+  "name": "CEF / Control Escolar FIAD",
+  "canonicalName": "Control Escolar FIAD",
+  "role": "identity-backbone-and-master-data",
+  "status": "canonical-context",
+  "source": {
+    "backend": "/home/otomi/isyte-backup/Isyte/repos/CEF/SIPA-FIAD",
+    "frontend": "/home/otomi/isyte-backup/Isyte/repos/CEF/SIPA_CE_FRONT",
+    "harness": "/home/otomi/isyte-backup/Isyte/harness"
+  },
+  "documents": {
+    "profile": "harness/control/projects/CEF/profile.md",
+    "systemSummary": "harness/control/projects/CEF/system-summary.md",
+    "endpoints": "harness/control/projects/CEF/endpoints.md",
+    "domainModel": "harness/control/projects/CEF/domain-model.md",
+    "codeMap": "harness/control/projects/CEF/code-map.md",
+    "integrations": "harness/control/projects/CEF/integrations.md",
+    "localRunbook": "harness/control/projects/CEF/local-runbook.md",
+    "securityAuth": "harness/control/projects/CEF/security-auth.md"
+  },
+  "localRoutes": {
+    "base": "http://localhost/cef",
+    "api": "http://localhost/cef/api",
+    "swagger": "http://localhost/cef/swagger",
+    "notificationsHub": "http://localhost/cef/hubs/notificaciones",
+    "salHub": "http://localhost/cef/hubs/sal"
+  },
+  "criticalVariables": [
+    "POSTGRES_HOST",
+    "POSTGRES_PORT",
+    "POSTGRES_DB",
+    "POSTGRES_USER",
+    "POSTGRES_PASSWORD",
+    "Jwt__Issuer",
+    "Jwt__Audience",
+    "Jwt__Key",
+    "MAILGUN_API_KEY",
+    "MAILGUN_DOMAIN",
+    "MAILGUN_BASE_URL",
+    "EMAIL_FROM",
+    "AUTO_MIGRATE"
+  ],
+  "consumers": [
+    "HU",
+    "SAL",
+    "CEF frontend",
+    "Harness"
+  ],
+  "lastInventoried": "2026-07-08"
+}
+

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0047",
+  "status": "closed",
+  "updatedAt": "2026-07-18T21:35:00-07:00",
+  "requirements": {
+    "architectureDecision": true,
+    "dependencyApproval": true,
+    "migrationPlan": false,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": false
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0047-hardened-mcp-integrations.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-18-hardened-mcp-integrations.md",
+    "investigation": null,
+    "architectureDecision": "harness/control/plans/NEXO-0047-hardened-mcp-integrations.md",
+    "dependencyApproval": "harness/control/plans/NEXO-0047-hardened-mcp-integrations.md",
+    "migrationPlan": null,
+    "report": "harness/control/reports/2026-07-18/NEXO-0047-hardened-mcp-integrations-session-002.md",
+    "implementation": "harness/control/implementations/IMPL-NEXO-0047-hardened-mcp-integrations.md",
+    "qa": "harness/control/reports/2026-07-18/NEXO-0047-hardened-mcp-integrations-qa.md",
+    "security": "harness/control/security/SEC-NEXO-0047-hardened-mcp-integrations-review-002.md",
+    "closeout": "harness/control/closeouts/NEXO-0047-hardened-mcp-integrations.md",
+    "externalApproval": null
+  },
+  "verification": [
+    "node --test .opencode/tests/mcp-config.test.js",
+    "node --test .opencode/tests/*.test.js",
+    "opencode debug config",
+    "opencode mcp list",
+    "node .opencode/scripts/build-session-context.mjs",
+    "graphify update ."
+  ]
+}

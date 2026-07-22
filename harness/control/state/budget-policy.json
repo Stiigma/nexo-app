@@ -1,0 +1,34 @@
+{
+  "currency": "USD",
+  "limits": {
+    "session": {
+      "soft": 0.4,
+      "hard": 0.5
+    },
+    "task": {
+      "soft": 2,
+      "hard": 2.5
+    }
+  },
+  "behavior": {
+    "request_handoff_on_soft": true,
+    "abort_on_hard": true,
+    "minimum_handoff_margin_usd": 0.05,
+    "abort_when_handoff_margin_exhausted": true
+  },
+  "paths": {
+    "ledger": ".opencode/state/budget-ledger.json",
+    "bindings": ".opencode/state/session-bindings.json",
+    "focus": "harness/control/state/focus.json",
+    "tasks": "harness/control/tasks.md",
+    "reports": "harness/control/reports"
+  },
+  "attribution": {
+    "require_explicit_session_binding": true,
+    "unbound_task_id": "UNBOUND_SESSION"
+  },
+  "reporting": {
+    "dimensions": ["session", "task", "model", "agent", "phase"],
+    "token_classes": ["input", "output", "reasoning", "cache_read", "cache_write"]
+  }
+}

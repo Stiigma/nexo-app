@@ -1,0 +1,39 @@
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
+plan_mode_reasoning_effort = "high"
+model_auto_compact_token_limit = 64000
+model_auto_compact_token_limit_scope = "total"
+tool_output_token_limit = 8000
+project_doc_max_bytes = 12000
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+personality = "pragmatic"
+model_verbosity = "low"
+model_reasoning_summary = "concise"
+compact_prompt = "Preserve the task ID, user intent, decisions, constraints, files changed, verification results, unresolved risks, and exact next action. Drop duplicate logs and obsolete exploration. Never claim unrun validation."
+
+# `notify` is intentionally not configured here because Codex ignores it in
+# project-local config; machine-local notifications belong in ~/.codex/config.toml.
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = [
+    "-y",
+    "chrome-devtools-mcp@latest",
+    "--browser-url=http://127.0.0.1:9222",
+    "--no-usage-statistics",
+    "--no-performance-crux",
+]
+
+[mcp_servers.github]
+command = "npx"
+args = [
+    "-y",
+    "@modelcontextprotocol/server-github",
+]

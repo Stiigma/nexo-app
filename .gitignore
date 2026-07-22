@@ -1,0 +1,36 @@
+# ── Secrets / Environment ──
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# ── Dependencies ──
+node_modules
+.pnpm-store
+
+# ── Build output ──
+dist
+build
+
+# ── Logs ──
+logs
+*.log
+
+# ── IDE / OS ──
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# ── Docker volumes ──
+nexo_postgres_data
+
+# ── Test coverage ──
+coverage
+
+# ── Graphify ──
+graphify-out/cost.json
+graphify-out/cache/
+
+# ── Temporary / staging ──
+.agent-skill-staging

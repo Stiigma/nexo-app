@@ -1,0 +1,68 @@
+{
+  "repos": [
+    {
+      "id": "cef",
+      "name": "CEF / Control Escolar",
+      "path": "/home/otomi/isyte-backup/Isyte/repos/CEF",
+      "deployBranch": "Postgre",
+      "canonicalProfile": "harness/control/projects/CEF/profile.json"
+    },
+    {
+      "id": "hu",
+      "name": "HU / Horas Universitarias",
+      "path": "/home/otomi/isyte-backup/Isyte/repos/HU",
+      "deployBranch": "deploy",
+      "canonicalProfile": "harness/control/projects/HU/profile.json"
+    },
+    {
+      "id": "sal",
+      "name": "SAL / Salidas y Autorizaciones",
+      "path": "/home/otomi/isyte-backup/Isyte/repos/SAL",
+      "deployBranch": "dev/release",
+      "canonicalProfile": "harness/control/projects/SAL/profile.json"
+    },
+    {
+      "id": "harness",
+      "name": "Harness FIAD",
+      "path": "/home/otomi/isyte-backup/Isyte/harness",
+      "deployBranch": null,
+      "canonicalProfile": "harness/control/projects/Harness/profile.json"
+    }
+  ],
+  "workflowTargets": {
+    "/home/otomi/isyte-backup/Isyte/repos/CEF/SIPA-FIAD": "CEF backend; historical workflow triggers on main, deploy, Postgre; deploy condition currently checks deploy.",
+    "/home/otomi/isyte-backup/Isyte/repos/CEF/SIPA_CE_FRONT": "CEF frontend; historical workflow deploys release.",
+    "/home/otomi/isyte-backup/Isyte/repos/HU/HU-Backend": "HU backend; historical workflow deploys deploy.",
+    "/home/otomi/isyte-backup/Isyte/repos/HU/HU-Frontend": "HU frontend; historical workflow deploys release.",
+    "/home/otomi/isyte-backup/Isyte/repos/SAL/SIPA-SAL": "SAL backend; historical workflow deploys dev.",
+    "/home/otomi/isyte-backup/Isyte/repos/SAL/Front_SIPA-SAL": "SAL frontend; historical workflow deploys release."
+  },
+  "canonicalContext": {
+    "overview": "harness/control/ecosystem/overview.md",
+    "integrations": "harness/control/ecosystem/integrations.md",
+    "localDotnetServicePlaybook": "harness/control/ecosystem/local-dotnet-service-playbook.md",
+    "toolsAndScripts": "harness/control/ecosystem/tools-and-scripts.md",
+    "credentialMap": "harness/control/ecosystem/credential-map.md"
+  },
+  "sensitiveFilePatterns": [
+    "**/.env",
+    "**/*.env",
+    "**/*.sql",
+    "**/*.xlsx",
+    "**/*.pdf",
+    "**/*credential*",
+    "**/*credencial*",
+    "**/*secret*",
+    "**/Secrets/**",
+    "**/traefik/users"
+  ],
+  "deployFilePatterns": [
+    ".github/workflows/**",
+    "harness/k8s/**",
+    "harness/docker/**",
+    "harness/traefik/**",
+    "harness/scripts/deploy.sh",
+    "**/Dockerfile",
+    "**/docker-compose*.yml"
+  ]
+}

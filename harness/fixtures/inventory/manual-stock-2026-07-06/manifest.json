@@ -1,0 +1,146 @@
+{
+  "fixture_id": "manual-stock-2026-07-06",
+  "created_at": "2026-07-06",
+  "item_count": 17,
+  "canonical_photo_count": 17,
+  "legacy_photo_count": 16,
+  "items": [
+    {
+      "internal_code": "NX-0001",
+      "path": "items/NX-0001-adidas-pants-negro/item.md",
+      "photo": "items/NX-0001-adidas-pants-negro/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/Adiddas/Usados/PansNegro"
+      }
+    },
+    {
+      "internal_code": "NX-0002",
+      "path": "items/NX-0002-adidas-pants-verde/item.md",
+      "photo": "items/NX-0002-adidas-pants-verde/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/Adiddas/Usados/PansVerde"
+      }
+    },
+    {
+      "internal_code": "NX-0003",
+      "path": "items/NX-0003-adidas-tennis-gelleze-azul/item.md",
+      "photo": "items/NX-0003-adidas-tennis-gelleze-azul/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/Adiddas/nuevo/Tennis/Gelleze/Azul"
+      }
+    },
+    {
+      "internal_code": "NX-0004",
+      "path": "items/NX-0004-adidas-tennis-gelleze-rosa/item.md",
+      "photo": "items/NX-0004-adidas-tennis-gelleze-rosa/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/Adiddas/nuevo/Tennis/Gelleze/Rosita"
+      }
+    },
+    {
+      "internal_code": "NX-0005",
+      "path": "items/NX-0005-gymshark-sudadera-verde/item.md",
+      "photo": "items/NX-0005-gymshark-sudadera-verde/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/GymShark/item1"
+      }
+    },
+    {
+      "internal_code": "NX-0006",
+      "path": "items/NX-0006-lululemon-compression-jacket-negra/item.md",
+      "photo": "items/NX-0006-lululemon-compression-jacket-negra/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/LuluLemon/ChamarritaNegra"
+      }
+    },
+    {
+      "internal_code": "NX-0007",
+      "path": "items/NX-0007-lululemon-leggings-azul/item.md",
+      "photo": "items/NX-0007-lululemon-leggings-azul/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/LuluLemon/Leggins/Azul"
+      }
+    },
+    {
+      "internal_code": "NX-0008",
+      "path": "items/NX-0008-lululemon-leggings-verde/item.md",
+      "photo": "items/NX-0008-lululemon-leggings-verde/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/LuluLemon/Leggins/Verde"
+      }
+    },
+    {
+      "internal_code": "NX-0009",
+      "path": "items/NX-0009-mitchell-and-ness-padres-jersey-blanco/item.md",
+      "photo": "items/NX-0009-mitchell-and-ness-padres-jersey-blanco/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/MLB's/SanDiego"
+      }
+    },
+    {
+      "internal_code": "NX-0010",
+      "path": "items/NX-0010-bucks-jersey-verde/item.md",
+      "photo": "items/NX-0010-bucks-jersey-verde/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/NBA's/Bucks"
+      }
+    },
+    {
+      "internal_code": "NX-0011",
+      "path": "items/NX-0011-mitchell-and-ness-kobe-jersey-azul/item.md",
+      "photo": "items/NX-0011-mitchell-and-ness-kobe-jersey-azul/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/NBA's"
+      }
+    },
+    {
+      "internal_code": "NX-0012",
+      "path": "items/NX-0012-the-north-face-sudadera-verde/item.md",
+      "photo": "items/NX-0012-the-north-face-sudadera-verde/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/NorthFace/Item2"
+      }
+    },
+    {
+      "internal_code": "NX-0013",
+      "path": "items/NX-0013-the-north-face-chamarra-negra/item.md",
+      "photo": "items/NX-0013-the-north-face-chamarra-negra/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/NorthFace/item1"
+      }
+    },
+    {
+      "internal_code": "NX-0014",
+      "path": "items/NX-0014-the-north-face-sudadera-negra/item.md",
+      "photo": "items/NX-0014-the-north-face-sudadera-negra/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/NorthFace/item3"
+      }
+    },
+    {
+      "internal_code": "NX-0015",
+      "path": "items/NX-0015-the-north-face-sueter-blanco/item.md",
+      "photo": "items/NX-0015-the-north-face-sueter-blanco/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/NorthFace/item4"
+      }
+    },
+    {
+      "internal_code": "NX-0016",
+      "path": "items/NX-0016-owala-bottle-rosa/item.md",
+      "photo": "items/NX-0016-owala-bottle-rosa/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/Owala"
+      }
+    },
+    {
+      "internal_code": "NX-0017",
+      "path": "items/NX-0017-owala-bottle-verde/item.md",
+      "photo": "items/NX-0017-owala-bottle-verde/photos/main.jpeg",
+      "source": {
+        "previous_path": "storage/Owala"
+      }
+    }
+  ]
+}
+

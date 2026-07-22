@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "transport": "stdio",
+      "enabled": true,
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browser-url=http://127.0.0.1:9222",
+        "--no-usage-statistics",
+        "--no-performance-crux"
+      ]
+    },
+    "github": {
+      "transport": "stdio",
+      "enabled": true,
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ]
+    }
+  }
+}

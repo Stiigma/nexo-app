@@ -1,0 +1,228 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Nexo token system — chrome oscuro + canvas claro.
+ * Superficies sólidas, no glassmorphism. Azul de marca reservado.
+ * Valores HSL en canales para encajar con el sistema de shadcn/ui.
+ */
+:root {
+  /* Superficies */
+  --paper: 210 20% 98%; /* #F7F8FA canvas de trabajo      */
+  --surface: 0 0% 100%; /* #FFFFFF tarjetas sobre paper   */
+  --surface-2: 215 25% 95%; /* #F0F3F7 bloques sutiles        */
+  --chrome: 220 26% 7%; /* #0A0B0D sidebar/topbar sólido  */
+  --chrome-2: 222 22% 11%; /* #111317 hover de nav           */
+
+  /* Bordes y texto */
+  --border: 220 14% 89%; /* #E1E5EC divisores               */
+  --border-strong: 220 14% 80%; /* #C4CBD4 bordes con énfasis      */
+  --text: 222 30% 12%; /* #14171F texto primario          */
+  --text-muted: 220 9% 42%; /* #5A6473 texto secundario        */
+  --text-subtle: 220 8% 58%; /* #8A93A2 texto terciario         */
+  --text-inverse: 0 0% 100%; /* texto sobre chrome              */
+
+  /* Marca: azul eléctrico Nexo (del logo) */
+  --brand: 210 100% 54%; /* #138BFF acento principal        */
+  --brand-strong: 210 96% 47%; /* #0478E6 hover                   */
+  --brand-soft: 210 100% 96%; /* #E8F2FF fondo de acento suave   */
+  --brand-ink: 210 100% 88%; /* #9ED4FF texto sobre brand-soft  */
+
+  /* Mapeo a aliases shadcn */
+  --background: var(--paper);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface);
+  --popover-foreground: var(--text);
+  --primary: var(--brand);
+  --primary-foreground: 0 0% 100%;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--brand-soft);
+  --accent-foreground: var(--brand-strong);
+  --destructive: 0 84% 56%; /* #E5484D */
+  --destructive-foreground: 0 0% 100%;
+  --input: var(--surface);
+  --ring: var(--brand);
+  --radius: 0.625rem; /* 10px */
+
+  /* Sidebar = chrome oscuro */
+  --sidebar: var(--chrome);
+  --sidebar-foreground: var(--text-inverse);
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: var(--chrome-2);
+  --sidebar-accent-foreground: var(--text-inverse);
+  --sidebar-border: 222 22% 16%;
+  --sidebar-ring: var(--brand);
+
+  /* Semánticos (estados) — pares ink/soft para no depender sólo del color */
+  --success: 162 84% 40%; /* #12B886 */
+  --success-soft: 152 60% 95%; /* #E8F8F2 */
+  --success-ink: 168 80% 22%;
+  --warning: 38 92% 50%; /* #F59E0B */
+  --warning-soft: 40 100% 95%; /* #FEF3E2 */
+  --warning-ink: 32 80% 26%;
+  --danger: 0 84% 56%; /* #E5484D */
+  --danger-soft: 0 86% 96%; /* #FDECEC */
+  --danger-ink: 0 70% 30%;
+  --info: var(--brand);
+  --info-soft: var(--brand-soft);
+  --info-ink: var(--brand-strong);
+
+  color-scheme: light;
+}
+
+/*
+ * Modo oscuro (fase 2): superficies ink sólidas, sin glassmorphism.
+ * El default es canvas claro; .dark se activa sólo si se añade la clase.
+ */
+.dark {
+  --paper: 222 26% 8%; /* #0F1115 */
+  --surface: 222 22% 12%; /* #16181D */
+  --surface-2: 222 20% 16%; /* #23262D */
+  --border: 222 18% 20%; /* #23262D */
+  --border-strong: 222 16% 28%;
+  --text: 210 20% 96%;
+  --text-muted: 218 14% 66%;
+  --text-subtle: 220 10% 52%;
+  --background: var(--paper);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface);
+  --popover-foreground: var(--text);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-muted);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text);
+  --accent: 222 24% 18%;
+  --accent-foreground: var(--text);
+  --input: var(--surface-2);
+  color-scheme: dark;
+}
+
+/* Mapa de tokens a utilidades Tailwind v4. */
+@theme inline {
+  --color-paper: hsl(var(--paper));
+  --color-surface: hsl(var(--surface));
+  --color-surface-2: hsl(var(--surface-2));
+  --color-chrome: hsl(var(--chrome));
+  --color-chrome-2: hsl(var(--chrome-2));
+
+  --color-border: hsl(var(--border));
+  --color-border-strong: hsl(var(--border-strong));
+  --color-text: hsl(var(--text));
+  --color-text-muted: hsl(var(--text-muted));
+  --color-text-subtle: hsl(var(--text-subtle));
+  --color-text-inverse: hsl(var(--text-inverse));
+
+  --color-brand: hsl(var(--brand));
+  --color-brand-strong: hsl(var(--brand-strong));
+  --color-brand-soft: hsl(var(--brand-soft));
+  --color-brand-ink: hsl(var(--brand-ink));
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --color-success: hsl(var(--success));
+  --color-success-soft: hsl(var(--success-soft));
+  --color-success-ink: hsl(var(--success-ink));
+  --color-warning: hsl(var(--warning));
+  --color-warning-soft: hsl(var(--warning-soft));
+  --color-warning-ink: hsl(var(--warning-ink));
+  --color-danger: hsl(var(--danger));
+  --color-danger-soft: hsl(var(--danger-soft));
+  --color-danger-ink: hsl(var(--danger-ink));
+  --color-info: hsl(var(--info));
+  --color-info-soft: hsl(var(--info-soft));
+  --color-info-ink: hsl(var(--info-ink));
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    background: hsl(var(--paper));
+    color: hsl(var(--text));
+    font-family:
+      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  /* Focus visible consistente con --ring */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Respetar preferencia de movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Safe-area para barras de acción fijas en móvil (PWA). */
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

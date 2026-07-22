@@ -1,0 +1,49 @@
+{
+  "id": "hu",
+  "name": "HU / Horas Universitarias",
+  "canonicalName": "Horas Universitarias",
+  "role": "cef-consuming-dotnet-service",
+  "status": "canonical-context",
+  "source": {
+    "backend": "/home/otomi/isyte-backup/Isyte/repos/HU/HU-Backend",
+    "frontend": "/home/otomi/isyte-backup/Isyte/repos/HU/HU-Frontend",
+    "harness": "/home/otomi/isyte-backup/Isyte/harness"
+  },
+  "documents": {
+    "profile": "harness/control/projects/HU/profile.md",
+    "systemSummary": "harness/control/projects/HU/system-summary.md",
+    "endpoints": "harness/control/projects/HU/endpoints.md",
+    "domainModel": "harness/control/projects/HU/domain-model.md",
+    "codeMap": "harness/control/projects/HU/code-map.md",
+    "integrations": "harness/control/projects/HU/integrations.md",
+    "localRunbook": "harness/control/projects/HU/local-runbook.md",
+    "securityAuth": "harness/control/projects/HU/security-auth.md"
+  },
+  "localRoutes": {
+    "base": "http://localhost/hu",
+    "api": "http://localhost/hu/api",
+    "swagger": "http://localhost/hu/swagger"
+  },
+  "criticalVariables": [
+    "POSTGRES_HOST",
+    "POSTGRES_PORT",
+    "POSTGRES_DB",
+    "POSTGRES_USER",
+    "POSTGRES_PASSWORD",
+    "Jwt__Issuer",
+    "Jwt__Audience",
+    "Jwt__Key",
+    "AuthServer__BaseUrl",
+    "AuthServer__TokenEndpoint",
+    "AuthServer__ClientId",
+    "AuthServer__ClientSecret",
+    "ResourceApi__BaseUrl"
+  ],
+  "dependsOn": [
+    "CEF",
+    "PostgreSQL",
+    "Harness"
+  ],
+  "lastInventoried": "2026-07-08"
+}
+

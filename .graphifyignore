@@ -1,0 +1,40 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Compilaciones
+dist/
+build/
+out/
+.next/
+coverage/
+*.tsbuildinfo
+
+# Cachés
+.cache/
+.turbo/
+.nx/
+tmp/
+temp/
+
+# Logs
+*.log
+logs/
+
+# Credenciales y variables
+.env
+.env.*
+!.env.example
+
+# Archivos binarios o pesados
+uploads/
+storage/
+*.zip
+*.tar
+*.tar.gz
+
+# Salidas generadas por Graphify
+graphify-out/
+
+# Prototipos descartables (Nexo)
+prototypes/

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0049",
+  "status": "closed",
+  "updatedAt": "2026-07-18T14:17:56-07:00",
+  "requirements": {
+    "architectureDecision": true,
+    "dependencyApproval": true,
+    "migrationPlan": false,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": true
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0049-opencode2-productivity-observability.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-18-opencode2-productivity-observability.md",
+    "investigation": null,
+    "architectureDecision": "harness/control/decisions/NEXO-0049-architecture-selection.md",
+    "dependencyApproval": "harness/control/decisions/NEXO-0049-dependency-selection.md",
+    "migrationPlan": null,
+    "report": "harness/control/reports/2026-07-18/NEXO-0049-opencode2-productivity-observability-session-001.md",
+    "implementation": "harness/control/implementations/IMPL-NEXO-0049-opencode2-productivity-observability.md",
+    "qa": "harness/control/reports/2026-07-18/NEXO-0049-opencode2-productivity-observability-qa-001.md",
+    "security": "harness/control/security/SEC-NEXO-0049-opencode2-productivity-observability-review-001.md",
+    "closeout": "harness/control/closeouts/NEXO-0049-opencode2-productivity-observability.md",
+    "externalApproval": "harness/control/decisions/NEXO-0049-external-approval.md"
+  },
+  "verification": [
+    "node --test .opencode/tests/runtime-productivity.test.js",
+    "node --test .opencode/tests/nexo-productivity-plugin.test.js",
+    "node --test .opencode/tests/nexo-budget-guard.test.js",
+    "node --test .opencode/tests/*.test.js",
+    "opencode2 debug config",
+    "opencode2 debug info",
+    "opencode2 debug startup",
+    "node .opencode/scripts/build-session-context.mjs",
+    "graphify update ."
+  ]
+}
