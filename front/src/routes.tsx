@@ -9,6 +9,11 @@ import { InventoryPage } from "@/features/inventory/views/InventoryPage";
 import { UsersPage } from "@/features/admin/users/views/UsersPage";
 import { CapturePage } from "@/features/capture/views/CapturePage";
 
+/**
+ * Shared layout:  user must be authenticated (any role).
+ * Route-level role guards are applied per-route via AuthGuard or
+ * the AdminLayout wrapper.
+ */
 function ProtectedLayout() {
   return (
     <AuthGuard>
@@ -19,6 +24,9 @@ function ProtectedLayout() {
   );
 }
 
+/**
+ * Admin-only layout:  wraps routes that require the Admin role.
+ */
 function AdminLayout() {
   return (
     <AuthGuard roles={["Admin"]}>
@@ -37,9 +45,9 @@ function PlaceholderPage({ title, description }: { title: string; description: s
 }
 
 /**
- * Root route redirect:
+ * Root redirect:
  * - Not authenticated → /login
- * - Admin → /admin/catalogs
+ * - Admin → /catalogs
  * - Operator → /capture
  */
 function RootRedirect() {
@@ -49,13 +57,13 @@ function RootRedirect() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-sm text-muted-foreground">Cargando sesión...</p>
+        <p className="text-sm text-muted-foreground">Cargando sesión…</p>
       </div>
     );
   }
 
   if (!user) return <Navigate to="/login" replace />;
-  if (user.role === "Admin") return <Navigate to="/admin/catalogs" replace />;
+  if (user.role === "Admin") return <Navigate to="/catalogs" replace />;
   return <Navigate to="/capture" replace />;
 }
 
@@ -67,38 +75,22 @@ export function AppRouter() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/set-password" element={<SetPasswordPage />} />
 
-        {/* Root: unauthenticated → /login, authenticated → default dashboard */}
+        {/* Root redirect */}
         <Route path="/" element={<RootRedirect />} />
 
+        {/* Authenticated routes (any role) */}
         <Route element={<ProtectedLayout />}>
-          {/* Operator + Admin */}
-          <Route
-            path="capture"
-            element={<CapturePage />}
-          />
-          <Route
-            path="inventory"
-            element={<InventoryPage />}
-          />
+          <Route path="capture" element={<CapturePage />} />
+          <Route path="inventory" element={<InventoryPage />} />
+          <Route path="catalogs" element={<CatalogsPage />} />
 
-          {/* Admin only */}
+          {/* Admin-only routes */}
           <Route element={<AdminLayout />}>
             <Route
               path="admin"
-              element={<Navigate to="/admin/catalogs" replace />}
+              element={<Navigate to="/catalogs" replace />}
             />
-            <Route
-              path="admin/inventory"
-              element={<InventoryPage />}
-            />
-            <Route
-              path="admin/catalogs"
-              element={<CatalogsPage />}
-            />
-            <Route
-              path="admin/users"
-              element={<UsersPage />}
-            />
+            <Route path="admin/users" element={<UsersPage />} />
             <Route
               path="admin/reports"
               element={

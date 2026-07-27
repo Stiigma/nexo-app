@@ -1,16 +1,22 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { ShoppingCart, PackageSearch, BarChart3, List, Users, Wrench } from "lucide-react";
 import { useAuthStore } from "@/common/stores/auth-store";
+import { allowedRoutesForRole, type RouteConfig } from "@/common/utils/access";
 import { cn } from "@/common/lib/utils";
 
-const MOBILE_NAV = [
-  { path: "/capture", label: "Captura", icon: ShoppingCart, roles: ["Admin", "Operator"] },
-  { path: "/inventory", label: "Inventario", icon: PackageSearch, roles: ["Admin", "Operator"] },
-  { path: "/admin/catalogs", label: "Catálogos", icon: List, roles: ["Admin", "Operator"] },
-  { path: "/admin/users", label: "Usuarios", icon: Users, roles: ["Admin"] },
-  { path: "/admin/corrections", label: "Correcciones", icon: Wrench, roles: ["Admin"] },
-  { path: "/admin/reports", label: "Reportes", icon: BarChart3, roles: ["Admin"] }
-];
+const ICON_MAP: Record<string, React.ComponentType<{ size?: number }>> = {
+  "shopping-cart": ShoppingCart,
+  "package-search": PackageSearch,
+  list: List,
+  users: Users,
+  "bar-chart-3": BarChart3,
+  wrench: Wrench,
+};
+
+function renderIcon(route: RouteConfig) {
+  const Icon = ICON_MAP[route.icon];
+  return Icon ? <Icon size={20} /> : null;
+}
 
 export function MobileNav() {
   const user = useAuthStore((s) => s.user);
@@ -19,7 +25,7 @@ export function MobileNav() {
 
   if (!user) return null;
 
-  const visible = MOBILE_NAV.filter((item) => item.roles.includes(user.role));
+  const visible = allowedRoutesForRole(user.role);
 
   return (
     <nav
@@ -27,20 +33,19 @@ export function MobileNav() {
       aria-label="Navegación móvil"
     >
       {visible.map((item) => {
-        const Icon = item.icon;
         const active = location.pathname.startsWith(item.path);
 
         return (
           <button
-            key={item.path}
+            key={item.id}
             type="button"
             className={cn(
               "flex flex-col items-center gap-0.5 border-none bg-transparent p-2 text-[0.68rem] text-muted-foreground",
-              active && "font-semibold text-primary"
+              active && "font-semibold text-primary",
             )}
             onClick={() => navigate(item.path)}
           >
-            <Icon size={20} />
+            {renderIcon(item)}
             <span>{item.label}</span>
           </button>
         );

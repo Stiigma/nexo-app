@@ -1,6 +1,11 @@
 export {
   canAccessRoute,
+  allowedRoutesForRole,
+  ROUTE_CONFIG,
+  // deprecated aliases
   visibleNavigationForRole,
-  NAVIGATION_ITEMS
+  NAVIGATION_ITEMS,
 } from "./access";
-export type { AppRouteId, NavigationItem } from "./access";
+export type { RouteConfig } from "./access";
+// @deprecated
+export type { NavigationItem } from "./access";

@@ -1,74 +1,82 @@
 import type { UserRole } from "@/common/types";
 
-export type AppRouteId =
-  | "operator-workspace"
-  | "admin-inventory"
-  | "admin-catalogs"
-  | "admin-users"
-  | "reports"
-  | "corrections"
-  | "set-password";
-
-export interface NavigationItem {
-  id: AppRouteId;
+/**
+ * Centralized route configuration — single source of truth for routing,
+ * role-based access, and navigation rendering.
+ *
+ * Rules:
+ * - `allowedRoles` defines which roles can access the route.
+ * - Admin automatically passes every route (superset).
+ * - Sidebar and MobileNav consume `allowedRoutesForRole()`.
+ * - routes.tsx uses `canAccessRoute()` for guards.
+ */
+export interface RouteConfig {
+  id: string;
   label: string;
   path: string;
-  requiredRole: UserRole;
+  allowedRoles: UserRole[];
   icon: string;
 }
 
-export const NAVIGATION_ITEMS: readonly NavigationItem[] = [
+export const ROUTE_CONFIG: readonly RouteConfig[] = [
   {
-    id: "operator-workspace",
+    id: "capture",
     label: "Captura",
     path: "/capture",
-    requiredRole: "Operator",
-    icon: "shopping-cart"
+    allowedRoles: ["Admin", "Operator"],
+    icon: "shopping-cart",
   },
   {
-    id: "admin-inventory",
+    id: "inventory",
     label: "Inventario",
-    path: "/admin/inventory",
-    requiredRole: "Admin",
-    icon: "package-search"
+    path: "/inventory",
+    allowedRoles: ["Admin", "Operator"],
+    icon: "package-search",
   },
   {
-    id: "admin-catalogs",
+    id: "catalogs",
     label: "Catálogos",
-    path: "/admin/catalogs",
-    requiredRole: "Operator",
-    icon: "list"
+    path: "/catalogs",
+    allowedRoles: ["Admin", "Operator"],
+    icon: "list",
   },
   {
     id: "admin-users",
     label: "Usuarios",
     path: "/admin/users",
-    requiredRole: "Admin",
-    icon: "users"
+    allowedRoles: ["Admin"],
+    icon: "users",
   },
   {
-    id: "reports",
+    id: "admin-reports",
     label: "Reportes",
     path: "/admin/reports",
-    requiredRole: "Admin",
-    icon: "bar-chart-3"
+    allowedRoles: ["Admin"],
+    icon: "bar-chart-3",
   },
   {
-    id: "corrections",
+    id: "admin-corrections",
     label: "Correcciones",
     path: "/admin/corrections",
-    requiredRole: "Admin",
-    icon: "wrench"
+    allowedRoles: ["Admin"],
+    icon: "wrench",
   },
 ];
 
-export function canAccessRoute(role: UserRole, routeId: AppRouteId): boolean {
-  const route = NAVIGATION_ITEMS.find((item) => item.id === routeId);
-  if (!route) return false;
+export function canAccessRoute(role: UserRole, route: RouteConfig): boolean {
   if (role === "Admin") return true;
-  return route.requiredRole === "Operator";
+  return route.allowedRoles.includes(role);
 }
 
-export function visibleNavigationForRole(role: UserRole): readonly NavigationItem[] {
-  return NAVIGATION_ITEMS.filter((item) => canAccessRoute(role, item.id));
+export function allowedRoutesForRole(role: UserRole): readonly RouteConfig[] {
+  return ROUTE_CONFIG.filter((route) => canAccessRoute(role, route));
 }
+
+/** Backwards-compatible alias for existing consumers. */
+export const NAVIGATION_ITEMS = ROUTE_CONFIG;
+
+/** @deprecated Use `RouteConfig` directly. */
+export type NavigationItem = RouteConfig;
+
+/** @deprecated Use `allowedRoutesForRole()`. */
+export const visibleNavigationForRole = allowedRoutesForRole;

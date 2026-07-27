@@ -4,7 +4,7 @@ import { useAuthStore } from "@/common/stores/auth-store";
 const TITLES: Record<string, string> = {
   "/capture": "Captura",
   "/inventory": "Inventario",
-  "/admin/catalogs": "Catálogos",
+  "/catalogs": "Catálogos",
   "/admin/users": "Usuarios",
   "/admin/reports": "Reportes",
   "/admin/corrections": "Correcciones"

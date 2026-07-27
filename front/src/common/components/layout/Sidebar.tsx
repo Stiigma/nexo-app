@@ -35,7 +35,7 @@ export function Sidebar() {
   const nav = user ? visibleNavigationForRole(user.role) : [];
 
   /** Dashboard path for the current user role */
-  const homePath = user?.role === "Admin" ? "/admin/catalogs" : "/capture";
+  const homePath = user?.role === "Admin" ? "/catalogs" : "/capture";
 
   function isActive(item: NavigationItem): boolean {
     return location.pathname.startsWith(item.path);
