@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { Shirt } from "lucide-react";
 import type { CatConfig, CatEntity } from "../catalog-entity";
+import { api } from "@/common/services/api-client";
 
 export interface ClothingSectionDto {
   id: string;
@@ -59,9 +60,13 @@ export const clothingTypeConfig: CatConfig<ClothingTypeEntity> = {
     {
       name: "sectionId",
       label: "Sección",
-      type: "text",
+      type: "select",
       required: true,
-      hint: "ID (UUID) de la sección de ropa",
+      placeholder: "Selecciona una sección...",
+      optionsLoader: async () => {
+        const sections = await api.get<ClothingSectionDto[]>("catalogs/clothing-types/sections");
+        return sections.map((s) => ({ value: s.id, label: s.nameEs }));
+      },
       fullWidth: true,
     },
     { name: "nameEs", label: "Nombre (ES)", type: "text", required: true },

@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -96,6 +97,26 @@ export function CatalogFormDialog<T extends CatEntity>({
 
   const isSaving = createMutation.isPending || updateMutation.isPending;
 
+  // Dynamic option loaders for select fields
+  const [dynamicOptions, setDynamicOptions] = useState<Record<string, { value: string; label: string }[]>>({});
+  const [loadingOptions, setLoadingOptions] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    for (const field of config.fields) {
+      if (field.type === "select" && field.optionsLoader && !dynamicOptions[field.name]) {
+        setLoadingOptions((prev) => new Set(prev).add(field.name));
+        void field.optionsLoader().then((options) => {
+          setDynamicOptions((prev) => ({ ...prev, [field.name]: options }));
+          setLoadingOptions((prev) => {
+            const next = new Set(prev);
+            next.delete(field.name);
+            return next;
+          });
+        });
+      }
+    }
+  }, [config.fields, dynamicOptions]);
+
   function renderField(field: CatField) {
     const error = errors[field.name]?.message as string | undefined;
     const fieldId = `field-${field.name}`;
@@ -132,17 +153,19 @@ export function CatalogFormDialog<T extends CatEntity>({
         </div>
       );
     } else if (field.type === "select") {
+      const options = dynamicOptions[field.name] ?? field.options ?? [];
+      const isLoading = loadingOptions.has(field.name);
       control = (
         <Select
           value={String(fieldValue ?? "")}
           onValueChange={(val) => setValue(field.name, val, { shouldValidate: true })}
-          disabled={isSaving}
+          disabled={isSaving || isLoading}
         >
           <SelectTrigger id={fieldId}>
-            <SelectValue placeholder={field.placeholder ?? "Seleccionar..."} />
+            <SelectValue placeholder={isLoading ? "Cargando..." : (field.placeholder ?? "Seleccionar...")} />
           </SelectTrigger>
           <SelectContent>
-            {field.options?.map((opt) => (
+            {options.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>
                 {opt.label}
               </SelectItem>

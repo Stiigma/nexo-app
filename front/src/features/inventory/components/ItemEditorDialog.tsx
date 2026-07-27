@@ -140,8 +140,10 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
 
   const computedCostMxnEq = useMemo(() => {
     const amount = form.costAmount === "" ? null : Number(form.costAmount);
+    // Normalize item cost (Prisma Decimal may return string)
+    const itemCost = Number.isFinite(Number(item?.costMxnEq)) ? Number(item!.costMxnEq) : null;
     if (amount === null || !Number.isFinite(amount)) {
-      return item?.costMxnEq != null ? item.costMxnEq : null;
+      return itemCost;
     }
     if (form.costCurrency === "MXN") {
       return amount; // cost IS in pesos
@@ -150,7 +152,7 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
     if (rate !== null && Number.isFinite(rate)) {
       return amount * rate; // USD → MXN
     }
-    return item?.costMxnEq != null ? item.costMxnEq : null;
+    return itemCost;
   }, [form.costAmount, form.costCurrency, form.exchangeRate, item]);
 
   const readinessIssues = useMemo(

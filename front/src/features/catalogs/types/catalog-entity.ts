@@ -25,6 +25,7 @@ export interface CatField {
   required?: boolean;
   placeholder?: string;
   options?: { value: string; label: string }[]; // solo para select
+  optionsLoader?: () => Promise<{ value: string; label: string }[]>; // select dinámico desde API
   fullWidth?: boolean; // ocupa 2 columnas en el grid del form
   hint?: string; // texto de ayuda bajo el campo
 }
