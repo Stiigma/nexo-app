@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Loader2, Pencil, RefreshCw, TriangleAlert } from "lucide-react";
+import { Loader2, Plus, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
-import { useIsMutating, useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -17,20 +16,20 @@ import { Label } from "@/common/components/ui/label";
 import { ApiError } from "@/common/types/api";
 import { useExchangeRateStore } from "@/store/use-exchange-rate";
 import { useCatalogOptions } from "../hooks/use-catalog-options";
-import { useItemEditorUpdate, type ItemEditorPayload } from "../hooks/use-item-editor-update";
-import { findInventoryItem } from "../lib/item-photo-cache";
-import { getItemReadinessIssues } from "../lib/item-readiness";
-import type { ItemDto } from "../types/item";
-import { ItemPhotoManager } from "./ItemPhotoManager";
+import { useItemCreate, type CreateItemPayload } from "../hooks/use-item-create";
+import {
+  MAX_ITEM_PHOTOS,
+  validatePhotoFiles,
+} from "../lib/item-photo-files";
+import { CameraCapture } from "./CameraCapture";
 
-interface ItemEditorDialogProps {
-  itemId: string | null;
+interface ItemCreatorDialogProps {
   open: boolean;
   onClose: () => void;
-  canViewFinancials?: boolean;
 }
 
-interface ItemEditorForm {
+interface CreatorForm {
+  internalCode: string;
   productName: string;
   brandId: string;
   categoryId: string;
@@ -51,7 +50,19 @@ interface CatalogOption {
   name: string;
 }
 
-const EMPTY_FORM: ItemEditorForm = {
+interface PendingPhoto {
+  file: File;
+  previewUrl: string;
+}
+
+function genInternalCode(): string {
+  const ts = Date.now().toString(36).toUpperCase();
+  const rand = Math.random().toString(36).slice(2, 4).toUpperCase();
+  return `NX-${ts}-${rand}`;
+}
+
+const EMPTY_FORM: CreatorForm = {
+  internalCode: genInternalCode(),
   productName: "",
   brandId: "",
   categoryId: "",
@@ -67,96 +78,40 @@ const EMPTY_FORM: ItemEditorForm = {
   minPriceMxn: "",
 };
 
-function formFromItem(item: ItemDto): ItemEditorForm {
-  return {
-    productName: item.productName ?? "",
-    brandId: item.brandId,
-    categoryId: item.categoryId,
-    conditionId: item.conditionId,
-    sizeId: item.sizeId ?? "",
-    colorId: item.colorId ?? "",
-    physicalLocation: item.physicalLocation ?? "",
-    targetPriceMxn: item.targetPriceMxn?.toString() ?? "",
-    notes: item.notes ?? "",
-    costCurrency: item.costCurrency ?? "MXN",
-    costAmount: item.costAmount?.toString() ?? "",
-    exchangeRate: item.exchangeRate?.toString() ?? "",
-    minPriceMxn: item.minPriceMxn?.toString() ?? "",
-  };
-}
-
-function addCurrentOption(options: CatalogOption[], current?: { id: string; name: string } | null): CatalogOption[] {
-  return current && !options.some((option) => option.id === current.id)
-    ? [current, ...options]
-    : options;
-}
-
-function timeAgo(dateString: string): string {
-  const now = Date.now();
-  const then = new Date(dateString).getTime();
-  const diffMs = now - then;
-  const mins = Math.floor(diffMs / 60000);
-  if (mins < 1) return "hace unos segundos";
-  if (mins < 60) return `hace ${mins} min`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `hace ${hours}h`;
-  const days = Math.floor(hours / 24);
-  return `hace ${days}d`;
-}
-
-export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = false }: ItemEditorDialogProps) {
-  const queryClient = useQueryClient();
-  const item = findInventoryItem(queryClient, itemId);
+export function ItemCreatorDialog({ open, onClose }: ItemCreatorDialogProps) {
   const { brands, categories, conditions, sizes, colors, isLoading: catalogsLoading } = useCatalogOptions();
-  const updateMutation = useItemEditorUpdate();
-  const photoMutationCount = useIsMutating({
-    mutationKey: ["inventory", "item-photos", itemId ?? "no-item"],
-  });
-  const [form, setForm] = useState<ItemEditorForm>(item ? formFromItem(item) : EMPTY_FORM);
+  const createMutation = useItemCreate();
+  const [form, setForm] = useState<CreatorForm>(EMPTY_FORM);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [activeTab, setActiveTab] = useState("generales");
+  const [pendingPhotos, setPendingPhotos] = useState<PendingPhoto[]>([]);
+  const [photoErrors, setPhotoErrors] = useState<string[]>([]);
 
   const currentRate = useExchangeRateStore((state) => state.currentRate);
   const rateLoading = useExchangeRateStore((state) => state.loading);
   const rateError = useExchangeRateStore((state) => state.error);
   const fetchCurrentRate = useExchangeRateStore((state) => state.fetchCurrentRate);
 
+  const remainingSlots = Math.max(0, MAX_ITEM_PHOTOS - pendingPhotos.length);
+  const isSaving = createMutation.isPending;
+
+  // Reset form when dialog opens
   useEffect(() => {
-    if (item && open) {
-      setForm(formFromItem(item));
+    if (open) {
+      setForm({ ...EMPTY_FORM, internalCode: genInternalCode() });
       setErrors({});
       setActiveTab("generales");
+      setPendingPhotos([]);
+      setPhotoErrors([]);
     }
-  }, [item?.id, open]);
+  }, [open]);
 
-  // Fetch exchange rate when dialog opens or "Compra" tab becomes active
+  // Fetch exchange rate when "Compra" tab becomes active
   useEffect(() => {
     if (open && activeTab === "compra") {
-      fetchCurrentRate().catch(() => {
-        // error is captured in the store
-      });
+      fetchCurrentRate().catch(() => {});
     }
   }, [open, activeTab, fetchCurrentRate]);
-
-  const computedCostMxnEq = useMemo(() => {
-    const amount = form.costAmount === "" ? null : Number(form.costAmount);
-    if (amount === null || !Number.isFinite(amount)) {
-      return item?.costMxnEq != null ? item.costMxnEq : null;
-    }
-    if (form.costCurrency === "MXN") {
-      return amount; // cost IS in pesos
-    }
-    const rate = form.exchangeRate === "" ? null : Number(form.exchangeRate);
-    if (rate !== null && Number.isFinite(rate)) {
-      return amount * rate; // USD → MXN
-    }
-    return item?.costMxnEq != null ? item.costMxnEq : null;
-  }, [form.costAmount, form.costCurrency, form.exchangeRate, item]);
-
-  const readinessIssues = useMemo(
-    () => (item ? getItemReadinessIssues(item) : []),
-    [item],
-  );
 
   const handleRefreshRate = useCallback(async () => {
     try {
@@ -170,42 +125,60 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
     }
   }, [fetchCurrentRate]);
 
-  // Sync exchange rate from store when it loads and currency is USD
+  // Auto-fill rate when USD is selected
   useEffect(() => {
-    if (currentRate && activeTab === "compra" && form.costCurrency === "USD" && form.exchangeRate === "" && item?.exchangeRate == null) {
+    if (currentRate && activeTab === "compra" && form.costCurrency === "USD" && form.exchangeRate === "") {
       setForm((current) => ({ ...current, exchangeRate: currentRate.rate.toString() }));
     }
-  }, [currentRate, activeTab, form.costCurrency, form.exchangeRate, item?.exchangeRate]);
+  }, [currentRate, activeTab, form.costCurrency, form.exchangeRate]);
 
-  if (!item) return null;
-  const currentItem = item;
+  const computedCostMxnEq = useMemo(() => {
+    const amount = form.costAmount === "" ? null : Number(form.costAmount);
+    if (amount === null || !Number.isFinite(amount)) return null;
+    if (form.costCurrency === "MXN") return amount;
+    const rate = form.exchangeRate === "" ? null : Number(form.exchangeRate);
+    if (rate !== null && Number.isFinite(rate)) return amount * rate;
+    return null;
+  }, [form.costAmount, form.costCurrency, form.exchangeRate]);
 
-  const optionGroups = {
-    brands: addCurrentOption(brands, currentItem.brand),
-    categories: addCurrentOption(categories, currentItem.category),
-    conditions: addCurrentOption(conditions, currentItem.condition),
-    sizes: addCurrentOption(sizes, currentItem.size),
-    colors: addCurrentOption(colors, currentItem.color),
-  };
-  const isSaving = updateMutation.isPending;
-  const isDirty = JSON.stringify(form) !== JSON.stringify(formFromItem(currentItem));
-
-  function updateField(field: keyof ItemEditorForm, value: string) {
+  function updateField(field: keyof CreatorForm, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
   }
 
-  function closeEditor() {
+  function handlePhotosSelected(files: File[]) {
+    const { accepted, errors } = validatePhotoFiles(files, remainingSlots);
+    setPhotoErrors(errors);
+    accepted.forEach((file) => {
+      const previewUrl = URL.createObjectURL(file);
+      setPendingPhotos((current) => [...current, { file, previewUrl }]);
+    });
+  }
+
+  function removePendingPhoto(index: number) {
+    setPendingPhotos((current) => {
+      const removed = current[index];
+      if (removed) URL.revokeObjectURL(removed.previewUrl);
+      return current.filter((_, i) => i !== index);
+    });
+  }
+
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      pendingPhotos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+    };
+  }, []);
+
+  function closeCreator() {
     if (isSaving) return;
-    if (photoMutationCount > 0) {
-      window.alert("Espera a que terminen los cambios de fotos antes de cerrar el editor.");
-      return;
-    }
-    if (isDirty && !window.confirm("Tienes cambios sin guardar. ¿Quieres descartarlos?")) return;
+    if (pendingPhotos.length > 0 && !window.confirm("Tienes fotos seleccionadas sin guardar. ¿Descartar?")) return;
     onClose();
   }
 
-  function validate(): ItemEditorPayload | null {
+  function validate(): CreateItemPayload | null {
     const nextErrors: Record<string, string> = {};
+
+    if (!form.internalCode.trim()) nextErrors.internalCode = "El código interno es obligatorio.";
     if (!form.brandId) nextErrors.brandId = "Selecciona una marca.";
     if (!form.categoryId) nextErrors.categoryId = "Selecciona una categoría.";
     if (!form.conditionId) nextErrors.conditionId = "Selecciona una condición.";
@@ -234,6 +207,7 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
     if (Object.keys(nextErrors).length > 0) return null;
 
     return {
+      internalCode: form.internalCode.trim(),
       productName: form.productName.trim() || null,
       brandId: form.brandId,
       categoryId: form.categoryId,
@@ -256,66 +230,80 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
     if (!payload) return;
 
     try {
-      await updateMutation.mutateAsync({ id: currentItem.id, data: payload });
-      toast.success("Prenda actualizada");
-      if (photoMutationCount > 0) {
-        toast.info("La prenda se guardó. Espera a que terminen los cambios de fotos para cerrar.");
-      } else {
-        onClose();
-      }
+      const photoFiles = pendingPhotos.map((p) => p.file);
+      await createMutation.mutateAsync({ data: payload, photoFiles });
+      toast.success("Prenda creada");
+      // Cleanup previews
+      pendingPhotos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+      onClose();
     } catch (error) {
-      const message = error instanceof ApiError || error instanceof Error
-        ? error.message
-        : "Error desconocido";
-      toast.error(`No se pudo actualizar la prenda: ${message}`);
+      const message =
+        error instanceof ApiError || error instanceof Error
+          ? error.message
+          : "Error desconocido";
+      toast.error(`No se pudo crear la prenda: ${message}`);
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={(nextOpen) => { if (!nextOpen) closeEditor(); }}>
+    <Dialog open={open} onOpenChange={(nextOpen) => { if (!nextOpen) closeCreator(); }}>
       <DialogContent className="max-h-[95vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Pencil className="h-5 w-5" />
-            Editar prenda {currentItem.internalCode}
+            <Plus className="h-5 w-5" />
+            Nueva prenda
           </DialogTitle>
           <DialogDescription>
-            Completa los datos de la prenda. Los costos y la venta se configuran en sus pestañas.
+            Completa los datos de la prenda. Puedes agregar fotos desde la cámara o galería.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-100">
-          <div className="mb-1 flex items-center gap-2 font-medium">
-            <TriangleAlert className="h-4 w-4" />
-            {readinessIssues.length > 0 ? "Faltantes para preparar" : "Ficha lista para revisión"}
-          </div>
-          {readinessIssues.length > 0 ? (
-            <p>{readinessIssues.map((issue) => issue.label).join(", ")}.</p>
-          ) : (
-            <p>Esta ficha tiene los datos mínimos de esta etapa.</p>
-          )}
-        </div>
-
         <form onSubmit={submit}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-2">
-            <TabsList className="grid h-auto w-full grid-cols-2 sm:grid-cols-4">
-              <TabsTrigger value="generales" disabled={photoMutationCount > 0}>Generales</TabsTrigger>
-              <TabsTrigger value="compra" disabled={photoMutationCount > 0}>Compra</TabsTrigger>
-              <TabsTrigger value="venta" disabled={photoMutationCount > 0}>Venta</TabsTrigger>
+            <TabsList className="grid h-auto w-full grid-cols-4">
+              <TabsTrigger value="generales">Generales</TabsTrigger>
+              <TabsTrigger value="compra">Compra</TabsTrigger>
+              <TabsTrigger value="venta">Venta</TabsTrigger>
               <TabsTrigger value="fotos">Fotos</TabsTrigger>
             </TabsList>
 
             {/* ── Tab 1: Generales ── */}
             <TabsContent value="generales" className="space-y-5">
               <section className="space-y-3">
+                <h3 className="text-sm font-semibold">Código interno</h3>
+                <Field label="Código" htmlFor="creator-code" error={errors.internalCode}>
+                  <div className="flex gap-1">
+                    <Input
+                      id="creator-code"
+                      value={form.internalCode}
+                      onChange={(event) => updateField("internalCode", event.target.value)}
+                      disabled={isSaving}
+                      placeholder="NX-0001"
+                      className="font-mono"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => updateField("internalCode", genInternalCode())}
+                      disabled={isSaving}
+                      title="Generar nuevo código"
+                    >
+                      <RefreshCw className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </Field>
+              </section>
+
+              <section className="space-y-3">
                 <h3 className="text-sm font-semibold">Identidad</h3>
-                <Field label="Nombre de la prenda" htmlFor="editor-product-name">
+                <Field label="Nombre de la prenda" htmlFor="creator-product-name">
                   <Input
-                    id="editor-product-name"
+                    id="creator-product-name"
                     value={form.productName}
                     onChange={(event) => updateField("productName", event.target.value)}
                     disabled={isSaving}
-                    placeholder="Ej. Sudadera Nike gris"
+                    placeholder="Ej. Sudadera Nike gris (opcional, se deriva automáticamente)"
                   />
                 </Field>
               </section>
@@ -323,18 +311,18 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
               <section className="space-y-3">
                 <h3 className="text-sm font-semibold">Clasificación</h3>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <SelectField label="Marca" field="brandId" options={optionGroups.brands} required />
-                  <SelectField label="Categoría" field="categoryId" options={optionGroups.categories} required />
-                  <SelectField label="Condición" field="conditionId" options={optionGroups.conditions} required />
-                  <SelectField label="Talla" field="sizeId" options={optionGroups.sizes} emptyLabel="Sin talla" />
-                  <SelectField label="Color" field="colorId" options={optionGroups.colors} emptyLabel="Sin color" />
+                  <SelectField label="Marca" field="brandId" options={brands} required />
+                  <SelectField label="Categoría" field="categoryId" options={categories} required />
+                  <SelectField label="Condición" field="conditionId" options={conditions} required />
+                  <SelectField label="Talla" field="sizeId" options={sizes} emptyLabel="Sin talla" />
+                  <SelectField label="Color" field="colorId" options={colors} emptyLabel="Sin color" />
                 </div>
               </section>
 
               <section className="space-y-3">
-                <Field label="Ubicación física" htmlFor="editor-location">
+                <Field label="Ubicación física" htmlFor="creator-location">
                   <Input
-                    id="editor-location"
+                    id="creator-location"
                     value={form.physicalLocation}
                     onChange={(event) => updateField("physicalLocation", event.target.value)}
                     disabled={isSaving}
@@ -343,9 +331,9 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
                 </Field>
               </section>
 
-              <Field label="Notas operativas" htmlFor="editor-notes">
+              <Field label="Notas operativas" htmlFor="creator-notes">
                 <textarea
-                  id="editor-notes"
+                  id="creator-notes"
                   className="flex min-h-24 w-full rounded-md border border-input bg-card px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                   value={form.notes}
                   onChange={(event) => updateField("notes", event.target.value)}
@@ -361,13 +349,13 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
                 <h3 className="text-sm font-semibold">Costo de adquisición</h3>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <Field label={`Costo (${form.costCurrency})`} htmlFor="editor-cost-amount" error={errors.costAmount}>
+                  <Field label={`Costo (${form.costCurrency})`} htmlFor="creator-cost-amount" error={errors.costAmount}>
                     <div className="relative">
                       <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
                         $
                       </span>
                       <Input
-                        id="editor-cost-amount"
+                        id="creator-cost-amount"
                         inputMode="decimal"
                         type="number"
                         min="0"
@@ -381,9 +369,9 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
                     </div>
                   </Field>
 
-                  <Field label="Moneda" htmlFor="editor-cost-currency">
+                  <Field label="Moneda" htmlFor="creator-cost-currency">
                     <select
-                      id="editor-cost-currency"
+                      id="creator-cost-currency"
                       className="flex h-9 w-full rounded-md border border-input bg-card px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       value={form.costCurrency}
                       onChange={(event) => updateField("costCurrency", event.target.value)}
@@ -397,10 +385,10 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
 
                 {form.costCurrency === "USD" && (
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <Field label="Tipo de cambio" htmlFor="editor-exchange-rate" error={errors.exchangeRate}>
+                    <Field label="Tipo de cambio" htmlFor="creator-exchange-rate" error={errors.exchangeRate}>
                       <div className="flex gap-1">
                         <Input
-                          id="editor-exchange-rate"
+                          id="creator-exchange-rate"
                           inputMode="decimal"
                           type="number"
                           min="0"
@@ -427,10 +415,10 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
                       </div>
                     </Field>
 
-                    <Field label="Costo MXN (estimado)" htmlFor="editor-cost-mxn-eq">
+                    <Field label="Costo MXN (estimado)" htmlFor="creator-cost-mxn-eq">
                       <div className="relative">
                         <Input
-                          id="editor-cost-mxn-eq"
+                          id="creator-cost-mxn-eq"
                           value={computedCostMxnEq != null ? computedCostMxnEq.toFixed(2) : ""}
                           disabled
                           className="text-muted-foreground"
@@ -452,27 +440,13 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
 
                 {currentRate && form.costCurrency === "USD" && (
                   <p className="text-xs text-muted-foreground">
-                    Fuente: {currentRate.apiSource} · actualizado {timeAgo(currentRate.fetchedAt)}
+                    Fuente: {currentRate.apiSource} · actualizado hace unos segundos
                   </p>
                 )}
                 {rateError && (
                   <p className="text-xs text-destructive">
                     Error al obtener tipo de cambio: {rateError}
                   </p>
-                )}
-
-                {/* Hidden: store exchange rate as reference even when currency is MXN */}
-                {form.costCurrency === "MXN" && form.exchangeRate && (
-                  <div className="rounded-md border border-border bg-muted/20 p-2 text-xs text-muted-foreground">
-                    Tipo de cambio registrado (referencia): {form.exchangeRate}
-                    <button
-                      type="button"
-                      className="ml-2 text-primary underline"
-                      onClick={() => updateField("exchangeRate", "")}
-                    >
-                      Limpiar
-                    </button>
-                  </div>
                 )}
               </section>
             </TabsContent>
@@ -482,9 +456,9 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
               <section className="space-y-3">
                 <h3 className="text-sm font-semibold">Precios de venta</h3>
 
-                <Field label="Precio público (MXN)" htmlFor="editor-price" error={errors.targetPriceMxn}>
+                <Field label="Precio público (MXN)" htmlFor="creator-price" error={errors.targetPriceMxn}>
                   <Input
-                    id="editor-price"
+                    id="creator-price"
                     inputMode="decimal"
                     type="number"
                     min="0"
@@ -497,39 +471,57 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
                   />
                 </Field>
 
-                {canViewFinancials && (
-                  <Field label="Precio mínimo (MXN)" htmlFor="editor-min-price" error={errors.minPriceMxn}>
-                    <Input
-                      id="editor-min-price"
-                      inputMode="decimal"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={form.minPriceMxn}
-                      onChange={(event) => updateField("minPriceMxn", event.target.value)}
-                      disabled={isSaving}
-                      placeholder="Ej. 500"
-                    />
-                  </Field>
-                )}
+                <Field label="Precio mínimo (MXN)" htmlFor="creator-min-price" error={errors.minPriceMxn}>
+                  <Input
+                    id="creator-min-price"
+                    inputMode="decimal"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={form.minPriceMxn}
+                    onChange={(event) => updateField("minPriceMxn", event.target.value)}
+                    disabled={isSaving}
+                    placeholder="Ej. 500"
+                  />
+                </Field>
               </section>
             </TabsContent>
 
-            <TabsContent value="fotos" className="mt-4 space-y-4">
+            {/* ── Tab 4: Fotos ── */}
+            <TabsContent value="fotos" className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Los cambios en fotos se guardan inmediatamente. Cerrar el editor no deshace cambios de fotos ya realizados.
+                Las fotos se subirán al guardar la prenda. Máximo {MAX_ITEM_PHOTOS} fotos, hasta 5 MB cada una.
               </p>
-              <ItemPhotoManager itemId={currentItem.id} photos={currentItem.photos} />
+
+              <CameraCapture
+                pendingPhotos={pendingPhotos}
+                onPhotosSelected={handlePhotosSelected}
+                onRemovePhoto={removePendingPhoto}
+                disabled={isSaving}
+                remainingSlots={remainingSlots}
+              />
+
+              {photoErrors.length > 0 && (
+                <div className="rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive" role="alert">
+                  <ul className="list-disc space-y-1 pl-5">
+                    {photoErrors.map((msg, i) => <li key={i}>{msg}</li>)}
+                  </ul>
+                </div>
+              )}
             </TabsContent>
           </Tabs>
 
           <DialogFooter className="mt-6">
-            <Button type="button" variant="outline" onClick={closeEditor} disabled={isSaving}>
+            <Button type="button" variant="outline" onClick={closeCreator} disabled={isSaving}>
               Cancelar
             </Button>
             <Button type="submit" disabled={isSaving || catalogsLoading}>
               {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
-              {isSaving ? "Guardando..." : "Guardar cambios"}
+              {isSaving
+                ? "Creando..."
+                : pendingPhotos.length > 0
+                  ? `Crear prenda + ${pendingPhotos.length} foto${pendingPhotos.length > 1 ? "s" : ""}`
+                  : "Crear prenda"}
             </Button>
           </DialogFooter>
         </form>
@@ -550,7 +542,7 @@ export function ItemEditorDialog({ itemId, open, onClose, canViewFinancials = fa
     emptyLabel?: string;
     required?: boolean;
   }) {
-    const fieldId = `editor-${field}`;
+    const fieldId = `creator-${field}`;
     const error = errors[field];
     return (
       <Field label={label} htmlFor={fieldId} error={error}>

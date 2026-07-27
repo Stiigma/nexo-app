@@ -6,7 +6,7 @@ export interface ItemReadinessIssue {
 }
 
 export function getItemReadinessIssues(item: ItemDto): ItemReadinessIssue[] {
-  const mainPhoto = item.photos?.find((photo) => photo.isMain) ?? item.photos?.[0];
+  const mainPhoto = item.photos.find((photo) => photo.isMain) ?? item.photos[0];
   const hasPublicPrice = Number(item.targetPriceMxn) > 0;
 
   return [

@@ -14,6 +14,12 @@ export interface ItemPhoto {
   createdAt: string;
 }
 
+export interface PhotoUploadResponse {
+  photos: ItemPhoto[];
+}
+
+export type CleanupStatus = "completed" | "pending";
+
 export interface ItemDto {
   id: string;
   internalCode: string;
@@ -45,12 +51,12 @@ export interface ItemDto {
     tripDate: string;
     store?: { id: string; name: string } | null;
   } | null;
-  photos?: ItemPhoto[];
+  photos: ItemPhoto[];
 }
 
 export interface InventoryStats {
   totalItems: number;
-  totalCostUSD?: number;
+  totalCostMXN?: number;
   totalValueMXN: number;
   avgMargin?: number;
   statusBreakdown: { status: ItemStatus; label: string; count: number }[];

@@ -7,6 +7,7 @@ import { SetPasswordPage } from "@/features/auth/views/SetPasswordPage";
 import { CatalogsPage } from "@/features/catalogs/views/CatalogsPage";
 import { InventoryPage } from "@/features/inventory/views/InventoryPage";
 import { UsersPage } from "@/features/admin/users/views/UsersPage";
+import { CapturePage } from "@/features/capture/views/CapturePage";
 
 function ProtectedLayout() {
   return (
@@ -73,12 +74,7 @@ export function AppRouter() {
           {/* Operator + Admin */}
           <Route
             path="capture"
-            element={
-              <PlaceholderPage
-                title="Captura"
-                description="Flujos operativos: compras, prendas, apartados y ventas."
-              />
-            }
+            element={<CapturePage />}
           />
           <Route
             path="inventory"

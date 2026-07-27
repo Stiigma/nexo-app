@@ -8,7 +8,7 @@ import type {
 
 /** Check if email exists and whether the user already has a password */
 export function checkEmail(email: string): Promise<CheckEmailResponse> {
-  return api.post<CheckEmailResponse>("/auth/check-email", { email });
+  return api.get<CheckEmailResponse>("/auth/check-email", { email });
 }
 
 /** Send a verification code to the given email */

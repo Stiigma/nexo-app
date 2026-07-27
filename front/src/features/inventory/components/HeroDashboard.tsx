@@ -94,7 +94,7 @@ export function HeroDashboard({ stats, isLoading, canViewFinancials }: HeroDashb
     );
   }
 
-  const totalCost = stats?.totalCostUSD ?? 0;
+  const totalCost = stats?.totalCostMXN ?? 0;
   const totalValue = stats?.totalValueMXN ?? 0;
   const avgMargin = stats?.avgMargin ?? 0;
   const totalItems = stats?.totalItems ?? 0;
@@ -117,7 +117,7 @@ export function HeroDashboard({ stats, isLoading, canViewFinancials }: HeroDashb
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {canViewFinancials && (
             <StatCard
-              label="USD invertido"
+              label="MXN invertido"
               value={totalCost}
               icon={DollarSign}
               format="currency"

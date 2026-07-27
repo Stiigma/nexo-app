@@ -1,1 +1,9 @@
-export { type ItemDto, type ItemStatus, type ItemPhoto, type InventoryStats, type InventoryFilters } from "./item";
+export {
+  type CleanupStatus,
+  type InventoryFilters,
+  type InventoryStats,
+  type ItemDto,
+  type ItemPhoto,
+  type ItemStatus,
+  type PhotoUploadResponse,
+} from "./item";

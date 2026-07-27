@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Plus } from "lucide-react";
 import { useInventoryUIStore } from "../store/inventory-ui.store";
 import { useAuthStore } from "@/common/stores/auth-store";
 import { useInventoryStats } from "../hooks/use-inventory-stats";
@@ -9,11 +10,14 @@ import {
   InventoryGrid,
   ItemDetailModal,
   ItemEditorDialog,
+  ItemCreatorDialog,
 } from "../components";
+import { Button } from "@/common/components/ui/button";
 import type { ItemDto, InventoryFilters } from "../types/item";
 
 export function InventoryPage() {
-  const [editingItem, setEditingItem] = useState<ItemDto | null>(null);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const canViewFinancials = useAuthStore((state) => state.user?.role === "Admin");
   const {
     search,
@@ -57,6 +61,10 @@ export function InventoryPage() {
     if (!selectedItemId) return undefined;
     return items.find((i) => i.id === selectedItemId);
   }, [selectedItemId, items]);
+  const editingItem = useMemo<ItemDto | undefined>(() => {
+    if (!editingItemId) return undefined;
+    return items.find((item) => item.id === editingItemId);
+  }, [editingItemId, items]);
 
   return (
     <div>
@@ -65,6 +73,17 @@ export function InventoryPage() {
         isLoading={statsLoading}
         canViewFinancials={canViewFinancials}
       />
+
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Prendas</h2>
+        <Button
+          onClick={() => setIsCreatorOpen(true)}
+          className="min-h-11"
+        >
+          <Plus className="h-4 w-4" />
+          Nueva prenda
+        </Button>
+      </div>
 
       <FilterBar
         filters={filters}
@@ -115,16 +134,21 @@ export function InventoryPage() {
           item={selectedItem}
           open={isDetailOpen}
           onClose={closeDetail}
-          onEdit={setEditingItem}
+          onEdit={setEditingItemId}
           canViewFinancials={canViewFinancials}
         />
       )}
 
       <ItemEditorDialog
-        item={editingItem}
+        itemId={editingItemId}
         open={Boolean(editingItem)}
-        onClose={() => setEditingItem(null)}
+        onClose={() => setEditingItemId(null)}
         canViewFinancials={canViewFinancials}
+      />
+
+      <ItemCreatorDialog
+        open={isCreatorOpen}
+        onClose={() => setIsCreatorOpen(false)}
       />
     </div>
   );
