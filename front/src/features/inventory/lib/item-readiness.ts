@@ -16,7 +16,6 @@ export function getItemReadinessIssues(item: ItemDto): ItemReadinessIssue[] {
     !item.conditionId && { field: "condition", label: "Condición" },
     !item.sizeId && { field: "size", label: "Talla" },
     !item.colorId && { field: "color", label: "Color" },
-    !item.physicalLocation?.trim() && { field: "location", label: "Ubicación física" },
     !hasPublicPrice && { field: "price", label: "Precio público" },
   ].filter(Boolean) as ItemReadinessIssue[];
 }
