@@ -350,25 +350,41 @@ Reportes base de v1:
 
 ## 8. Roles y permisos
 
-### Admin
+### Admin — Superusuario / Root del sistema
 
-Puede:
+Admin es el rol de desarrollo y administracion del sistema. Tiene acceso total:
+hereda TODOS los permisos del Operador mas capacidades exclusivas de sistema.
 
-- Gestionar catalogos.
-- Ver reportes.
-- Gestionar usuarios.
-- Corregir datos operativos.
-- Consultar todo el inventario.
+Permisos exclusivos de Admin (no disponibles para Operador):
 
-### Operador
+- Gestionar usuarios, roles y permisos.
+- Configuraciones de sistema y despliegue.
+- Corregir datos operativos con trazabilidad (correcciones administrativas).
 
-Puede:
+Admin hereda todo lo del Operador:
 
-- Crear lotes de compra.
-- Capturar prendas.
-- Registrar apartados.
-- Registrar ventas.
-- Consultar inventario operativo.
+- Dashboard, inventario, catalogo y captura completos.
+- Ver todos los detalles operativos y financieros de cada producto.
+- Reportes, metricas y consultas.
+
+### Operador — Usuario principal del negocio
+
+Operador es el rol primario del sistema. Representa al usuario real que opera
+el negocio dia a dia. Tiene acceso completo a TODO lo relacionado con la
+operacion del negocio:
+
+- Dashboard general con metricas del negocio.
+- Inventario completo: ver, buscar, filtrar y editar cada prenda.
+- Gestion completa de catalogos: marcas, categorias, tipos, tallas, colores,
+  condiciones y tiendas (crear, editar, activar/desactivar).
+- Captura de prendas con camara, fotos multiples y metadatos.
+- Crear lotes de compra y registrar gastos.
+- Registrar apartados y ventas.
+- Ver detalles financieros de cada producto (costo, margen, precio).
+- Reportes operativos: ventas, compras, gastos, utilidad por periodo.
+
+En resumen: Operador ve y opera todo el negocio. Admin es Operador + raiz del
+sistema (usuarios, roles, correcciones).
 
 ## 9. UX y diseno
 

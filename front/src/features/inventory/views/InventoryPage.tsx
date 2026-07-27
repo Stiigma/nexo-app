@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import { useInventoryUIStore } from "../store/inventory-ui.store";
-import { useAuthStore } from "@/common/stores/auth-store";
 import { useInventoryStats } from "../hooks/use-inventory-stats";
 import { useInventoryList } from "../hooks/use-inventory-list";
 import {
@@ -18,7 +17,8 @@ import type { ItemDto, InventoryFilters } from "../types/item";
 export function InventoryPage() {
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
-  const canViewFinancials = useAuthStore((state) => state.user?.role === "Admin");
+  // Admin y Operador ven datos financieros. Solo roles futuros limitados (ej. Viewer) los ocultarían.
+  const canViewFinancials = true;
   const {
     search,
     status,
