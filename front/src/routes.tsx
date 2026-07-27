@@ -47,8 +47,7 @@ function PlaceholderPage({ title, description }: { title: string; description: s
 /**
  * Root redirect:
  * - Not authenticated → /login
- * - Admin → /catalogs
- * - Operator → /capture
+ * - Any authenticated role → /inventory (dashboard general)
  */
 function RootRedirect() {
   const user = useAuthStore((s) => s.user);
@@ -63,8 +62,7 @@ function RootRedirect() {
   }
 
   if (!user) return <Navigate to="/login" replace />;
-  if (user.role === "Admin") return <Navigate to="/catalogs" replace />;
-  return <Navigate to="/capture" replace />;
+  return <Navigate to="/inventory" replace />;
 }
 
 export function AppRouter() {
