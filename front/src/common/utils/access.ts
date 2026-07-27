@@ -20,6 +20,13 @@ export interface RouteConfig {
 
 export const ROUTE_CONFIG: readonly RouteConfig[] = [
   {
+    id: "dashboard",
+    label: "Dashboard",
+    path: "/dashboard",
+    allowedRoles: ["Admin", "Operator"],
+    icon: "bar-chart-3",
+  },
+  {
     id: "capture",
     label: "Captura",
     path: "/capture",

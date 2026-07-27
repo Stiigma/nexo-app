@@ -34,8 +34,8 @@ export function Sidebar() {
 
   const nav = user ? visibleNavigationForRole(user.role) : [];
 
-  /** Dashboard path for the current user role — everyone lands on inventory */
-  const homePath = "/inventory";
+  /** Dashboard path for the current user role — everyone lands on the dashboard */
+  const homePath = "/dashboard";
 
   function isActive(item: NavigationItem): boolean {
     return location.pathname.startsWith(item.path);

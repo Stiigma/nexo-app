@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useAuthStore } from "@/common/stores/auth-store";
 
 const TITLES: Record<string, string> = {
+  "/dashboard": "Dashboard",
   "/capture": "Captura",
   "/inventory": "Inventario",
   "/catalogs": "Catálogos",

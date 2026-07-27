@@ -8,6 +8,7 @@ import { CatalogsPage } from "@/features/catalogs/views/CatalogsPage";
 import { InventoryPage } from "@/features/inventory/views/InventoryPage";
 import { UsersPage } from "@/features/admin/users/views/UsersPage";
 import { CapturePage } from "@/features/capture/views/CapturePage";
+import { DashboardPage } from "@/features/dashboard/views/DashboardPage";
 
 /**
  * Shared layout:  user must be authenticated (any role).
@@ -62,7 +63,7 @@ function RootRedirect() {
   }
 
   if (!user) return <Navigate to="/login" replace />;
-  return <Navigate to="/inventory" replace />;
+  return <Navigate to="/dashboard" replace />;
 }
 
 export function AppRouter() {
@@ -78,6 +79,7 @@ export function AppRouter() {
 
         {/* Authenticated routes (any role) */}
         <Route element={<ProtectedLayout />}>
+          <Route path="dashboard" element={<DashboardPage />} />
           <Route path="capture" element={<CapturePage />} />
           <Route path="inventory" element={<InventoryPage />} />
           <Route path="catalogs" element={<CatalogsPage />} />
