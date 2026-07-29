@@ -1,8 +1,24 @@
 # Nexo Control Plane
 
-This directory is the operational control plane for Nexo. It keeps live state,
-task plans, session reports, closeouts, daily journal entries, and evidence so a
-new Codex, OpenCode, or human session can continue without reading prior chat.
+This directory is the operational control plane for Nexo. Fast work has no
+state. Normal work may keep one compact JSON continuity record plus a generated
+Markdown projection. Controlled, prolonged, and cross-agent work adds formal
+plans, rollback, evidence, QA, security, and release gates as required.
+
+## Operating Model
+
+- **Fast:** no task, plan, report, journal, or manifest.
+- **Normal:** conversational plan and proportional tests; optional compact
+  continuity under `state/tasks/` and `work/`.
+- **Controlled:** full governed manifest, plan/handoff, rollback, approvals,
+  independent QA/security, and release readiness when production is in scope.
+
+Structured manifests are canonical for registered tasks. `tasks.md` is their
+index projection and remains the legacy source for historical rows without a
+manifest. `state/CURRENT.md` and `state/NEXT.md` are legacy views.
+
+Graphify is optional and disabled by default. Monetary budget thresholds are
+telemetry warnings by default; they do not abort sessions or generate reports.
 
 ## Current State
 
@@ -60,6 +76,19 @@ new Codex, OpenCode, or human session can continue without reading prior chat.
   status/attention, privacy controls, content-free telemetry, native context
   bounds, optional loopback observability, 81 passing tests, QA pass, and
   security approval. The product focus remains `NEXO-0036`.
+- Latest product planning task: `NEXO-0050` is planned at P0 with exhaustive
+  inventory and listing state machines, data/role guards, safe automatic
+  derivation, different-user price approval, append-only audit, and a phased
+  migration/API plan. It reuses the NEXO-0037 safe editor rather than rewriting
+  it. Product-owner policy approval, an ADR, and a build handoff remain open;
+  the default product focus is unchanged.
+- Latest deployment remediation: `NEXO-0031` deployed the Vercel/ngrok
+  same-origin proxy after explicit user authorization. Deployment `9p8buojpD`
+  is Ready, the production bundle uses `/api/v1`, and hosted API requests return
+  backend JSON without `ERR_NGROK_6024`. Its verified local backup restore now
+  serves 78 items/photos and passes authenticated local API/media checks.
+  Hosted acceptance and the remaining DNS, automated-backup, and infrastructure
+  gates stay open.
 - Last completed task: `NEXO-0027` - Image Optimization Pipeline (Sharp + WebP), implemented in media module. Ver `reports/2026-07-07/NEXO-0027-image-optimization.md`.
 - Last completed task: `NEXO-0027` - Image Optimization Pipeline (Sharp + WebP).
 - Latest work: Image optimization pipeline integrated into media module. 8 new
@@ -76,16 +105,22 @@ new Codex, OpenCode, or human session can continue without reading prior chat.
   local .NET service development. Legacy FIAD memory remains a source only, not
   live state.
 
-## Quick Start For A New Session
+## Quick Start
 
 1. Read `../../AGENTS.md`.
-2. From the repository root, run the current surface adapter:
+2. For a self-contained fast or normal request, inspect the relevant files and
+   work directly without creating administrative artifacts.
+3. To preserve or resume a normal idea, use `nexo-work continuity
+   create|find|checkpoint|resume`. Require an exact selected task before resume.
+4. To resume registered, prolonged, controlled, or cross-agent work, run the
+   current surface adapter from the repository root:
    - ChatGPT/Codex: `node .codex/scripts/build-session-context.mjs`.
    - OpenCode: `node .opencode/scripts/build-session-context.mjs`.
-3. On success, read that surface's `state/session-context.json` plus the
+5. On success, read that surface's `state/session-context.json` plus the
    matching canonical agent/skill.
-4. Use the full workflow/tasks/plan/report/journal/CURRENT/NEXT fallback only
-   when compilation fails or the packet is insufficient.
+6. Treat expiry as a warning when status, links, and hashes validate. Fall back
+   first to the selected manifest/projection, then its named evidence. Read the
+   complete index/journal/legacy views only to resolve a contradiction.
 
 ## Agent Operating System
 
@@ -93,7 +128,9 @@ new Codex, OpenCode, or human session can continue without reading prior chat.
 
 - `agents/` for role selection and agent behavior.
 - `skills/` for reusable work procedures.
-- `state/` for current and next work summaries.
+- `state/` for canonical structured task manifests and legacy focus views.
+- `work/` for generated compact continuity projections.
+- `evals/` for provider-neutral behavioral contract checks.
 - `indexes/` for navigation and routing smoke tests.
 - `handoffs/` for plan-to-build transfers.
 - `implementations/` for durable implementation context.
@@ -115,9 +152,9 @@ adapter and follow `harness/control/`.
 ## Live Index
 
 - Workflow: `WORKFLOW.md`
-- Task index: `tasks.md`
-- Current state: `state/CURRENT.md`
-- Next state: `state/NEXT.md`
+- Structured task state: `state/tasks/`
+- Task index projection and historical rows: `tasks.md`
+- Legacy state views: `state/CURRENT.md`, `state/NEXT.md`
 - Product spec: `../../docs/spec/`
 - FIAD ecosystem: `ecosystem/`
 - FIAD project profiles: `projects/`
@@ -142,7 +179,7 @@ adapter and follow `harness/control/`.
 ## Latest Records
 
 - Latest report:
-  `reports/2026-07-18/NEXO-0049-opencode2-productivity-observability-session-001.md`
+  `reports/2026-07-25/NEXO-0050-garment-business-rules-planning-session-001.md`
 - Latest investigation:
   `investigations/INV-2026-07-07-catalogs-500-error.md`
 - Latest handoff:
@@ -151,7 +188,7 @@ adapter and follow `harness/control/`.
   `closeouts/NEXO-0049-opencode2-productivity-observability.md`
 - Latest FIAD closeout:
   `closeouts/FIAD-0003-canonical-ecosystem-context.md`
-- Latest journal: `journal/2026-07-18.md`
+- Latest journal: `journal/2026-07-25.md`
 
 ## Closed Tasks
 
@@ -204,6 +241,10 @@ adapter and follow `harness/control/`.
   `OPERATOR` and `ADMIN`, with API-level financial redaction for operators.
   Authenticated visual QA is pending; listing publication, price approval, and
   sales controls remain subsequent slices.
+- `NEXO-0050` is planned at P0 to make garment lifecycle changes explicit,
+  guarded, derived where safe, multi-user approved, and auditable across
+  inventory and listing dimensions. Approval/ADR and NEXO-0037 scope alignment
+  precede build.
 - 🔴 Resume `NEXO-0008` (F2 operational catalogs) — next product feature.
 - 🟡 Implement `NEXO-0023` (security logging & alerting) — Fase 0 completada ✅.
   RequestLoggingInterceptor global captura cada HTTP request/response a Winston.
@@ -214,6 +255,11 @@ adapter and follow `harness/control/`.
   browser verification remains.
 - 🟢 `NEXO-0030` implemented Command Code fallback for OpenCode with project
   MCPs and runbook; no commit/push/deploy done.
+- 🟡 `NEXO-0031` has a Ready production deployment with Root Directory `front`
+  and the Vercel/ngrok same-origin API proxy. The reversible local restore and
+  authenticated local login/catalog/photo acceptance pass; hosted acceptance,
+  Docker/ngrok health, DNS, automated backups, and broader close gates remain
+  open.
 - Expand and execute F2-F11 in dependency order from
   `plans/NEXO-v1-feature-master-plan.md`.
 - Resolve remaining SRS open questions when a feature touches them.

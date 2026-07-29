@@ -14,8 +14,9 @@ Close a completed task with durable evidence and correct live state.
    and manifest both remain `implemented`.
 5. Only after an allowed decision, update `tasks.md` and the manifest to
    `closed`.
-6. Update `harness/control/README.md`, `state/CURRENT.md`, and `state/NEXT.md`.
-7. Append a journal entry with result and recommended next step.
+6. Synchronize the manifest and task index. Do not use legacy CURRENT/NEXT as
+   resume sources.
+7. Append a journal entry only when closure is a durable milestone.
 
 ## Rules
 

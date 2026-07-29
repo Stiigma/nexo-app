@@ -4,6 +4,9 @@
 
 Create a handoff that lets another agent execute without guessing.
 
+A handoff is only an artifact written by `nexo`. Creating it does not invoke
+another model and does not authorize delegation.
+
 ## File Name
 
 Use:
@@ -26,7 +29,9 @@ harness/control/handoffs/HOFF-YYYY-MM-DD-slug.md
 
 ## Rules
 
-- Non-trivial plan-to-build transitions require a handoff.
+- Controlled, prolonged, or cross-agent plan-to-build transitions require a
+  handoff.
+- Return the completed handoff to `nexo`; do not start its receiving agent.
 - Handoffs should be specific enough for `nexo-build`, `nexo-qa`,
   `nexo-infra`, or `nexo-security` to act without re-planning.
 - Link requirements, ADRs, reports, investigations, and design specs when they

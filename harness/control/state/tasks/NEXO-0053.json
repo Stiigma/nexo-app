@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0053",
+  "status": "active",
+  "updatedAt": "2026-07-29T17:30:00-07:00",
+  "requirements": {
+    "architectureDecision": false,
+    "dependencyApproval": false,
+    "migrationPlan": false,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": false
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0053-instagram-giveaway-follow-verification.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-29-nexo-0053-follow-verification.md",
+    "investigation": null,
+    "architectureDecision": null,
+    "dependencyApproval": null,
+    "migrationPlan": null,
+    "report": null,
+    "implementation": "harness/control/implementations/IMPL-NEXO-0053-women-follow-bonus-application.md",
+    "qa": null,
+    "security": null,
+    "closeout": null,
+    "externalApproval": null
+  },
+  "verification": [
+    "pnpm --dir back tsc --noEmit",
+    "pnpm --dir front tsc --noEmit",
+    "pnpm --dir back test:unit",
+    "pnpm --dir back build",
+    "pnpm --dir front build",
+    "node harness/control/scripts/control-engine.mjs gate --task NEXO-0052 --name build"
+  ]
+}

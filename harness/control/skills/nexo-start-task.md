@@ -2,7 +2,8 @@
 
 ## Purpose
 
-Create or activate a task using a stable `NEXO-0000` ID.
+Create or activate a controlled, prolonged, or cross-agent task using a stable
+`NEXO-0000` ID. Fast and normal work does not use this skill.
 
 ## Steps
 
@@ -10,11 +11,13 @@ Create or activate a task using a stable `NEXO-0000` ID.
 2. Create a plan under `harness/control/plans/` from
    `harness/control/templates/plan.md`.
 3. Add or update the task row in `tasks.md`.
-4. For a new non-trivial task, create `state/tasks/TASK-ID.json` with explicit
+4. For a new controlled task, create `state/tasks/TASK-ID.json` with explicit
    requirements and evidence paths, then run the control-engine `inspect`
    command.
-5. Update `harness/control/README.md` and `state/CURRENT.md`.
-6. Append a journal entry describing the decision and source request.
+5. Update `harness/control/README.md`, `state/CURRENT.md`, and `state/NEXT.md`
+   only if the actual focus changes.
+6. Append a journal entry only when task creation is a durable decision or
+   milestone.
 
 ## Required Plan Fields
 

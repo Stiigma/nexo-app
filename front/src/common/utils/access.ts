@@ -48,6 +48,13 @@ export const ROUTE_CONFIG: readonly RouteConfig[] = [
     icon: "list",
   },
   {
+    id: "admin-giveaways",
+    label: "Giveaways",
+    path: "/admin/giveaways",
+    allowedRoles: ["Admin"],
+    icon: "gift",
+  },
+  {
     id: "admin-users",
     label: "Usuarios",
     path: "/admin/users",

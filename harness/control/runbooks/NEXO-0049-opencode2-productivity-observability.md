@@ -42,6 +42,29 @@ Nexo control plane, exposing local data, or touching the product port.
    port `5173`.
 6. Stop the optional server with `Ctrl-C`; it has no required background mode.
 
+## Upgrading The Custom OpenCode2 Installation
+
+`opencode2` resolves through `~/.local/bin/opencode2` into the package-local
+binary under `~/.opencode-dev/node_modules`. The built-in `opencode2 upgrade`
+command cannot infer this custom installation method and fails with
+`Unknown installation method: unknown`.
+
+Upgrade the package from `~/.opencode-dev` instead:
+
+1. Run `npm install opencode-ai@latest`.
+2. If npm reports that the package postinstall was blocked, run
+   `npm install-scripts approve opencode-ai`, review that only `opencode-ai` is
+   approved, and run `npm rebuild opencode-ai`.
+3. Run `opencode2 --version`, `opencode --version`, and
+   `npm install-scripts ls`. Both commands must resolve the intended version and
+   npm must report no unreviewed install scripts.
+4. Return to the repository root and run the doctor, effective-config,
+   startup, complete harness, and pseudo-TTY checks in this runbook.
+
+Do not use `opencode2 upgrade -m npm` for this layout. That mode performs a
+global npm installation rather than updating the package-local runtime that
+the `opencode2` link targets.
+
 ## Verification
 
 - `node --test .opencode/tests/runtime-productivity.test.js`

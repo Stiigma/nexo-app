@@ -32,5 +32,8 @@ coverage
 graphify-out/cost.json
 graphify-out/cache/
 
+# ── Database backups ──
+backups/
+
 # ── Temporary / staging ──
 .agent-skill-staging

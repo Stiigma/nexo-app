@@ -104,6 +104,18 @@ datos Neon.
 - 2026-07-22: El redeploy compiló y quedó Ready, pero la aceptación detectó el
   interstitial gratuito `ERR_NGROK_6024` en tráfico de navegador. Se aprobó el
   proxy same-origin Vercel→ngrok para cubrir API, cookies y fotos nativas.
+- 2026-07-22: Con autorización explícita, se confirmaron Root Directory
+  `front`, Vite, Node 22.x y ausencia de overrides; se configuraron
+  `VITE_API_BASE_URL=/api/v1` y el `BACKEND_ORIGIN` actual para Production y
+  Preview. El redeploy `9p8buojpD` quedó Ready y la ruta hospedada entrega JSON
+  del backend sin el interstitial. La aceptación autenticada y el resto de la
+  infraestructura NEXO-0031 siguen abiertos.
+- 2026-07-25: Restaurado de forma reversible el backup local
+  `nexo-backup-20260726T041228Z.sql.gz`. La base activa pasó de 56 a 78
+  artículos/fotos; las 9 migraciones y sus checksums coinciden, no hay
+  huérfanos, las 78 claves existen en Azure y la aceptación local autenticada
+  de catálogos, inventario y fotos pasó. La base anterior se conserva como
+  `nexo_pre_restore_20260726` para rollback.
 
 ## Decision Log
 
@@ -125,7 +137,7 @@ datos Neon.
 
 | Riesgo | Mitigación |
 |--------|-----------|
-| ngrok URL cambia en cada reinicio | ngrok free tier tiene URLs efímeras. Usar ngrok authtoken para URL semi-estable o documentar proceso de actualización en frontend. |
+| ngrok URL cambia en cada reinicio | ngrok free tier tiene URLs efímeras. Usar ngrok authtoken para URL semi-estable o actualizar `BACKEND_ORIGIN` en Vercel y re-deployar. |
 | Cold start de ngrok + backend | Usar `restart: unless-stopped` en Docker Compose. Monitorear uptime. |
 | Neon free tier limita a 0.5 GB | Monitorear tamaño de BD. Hacer vacuum regular. Backups permiten migrar si se excede. |
 | Vercel Hobby plan limita 100 GB bandwidth | Suficiente para Fase 1. Monitorear analytics. |
@@ -138,7 +150,7 @@ datos Neon.
 - [ ] `curl https://ngrok-url/api/v1/health` responde 200.
 - [ ] GitHub Actions CI pasa en ambos repos.
 - [ ] Vercel deploy exitoso en `teamnexo.nexoshopmx.store`.
-- [ ] Backup manual ejecutado y restaurado con éxito en BD local.
+- [x] Backup manual ejecutado y restaurado con éxito en BD local.
 - [ ] Backup diario automático configurado y verificado.
 
 ## Related Records

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0050",
+  "status": "planned",
+  "updatedAt": "2026-07-26T00:00:00-07:00",
+  "requirements": {
+    "architectureDecision": true,
+    "dependencyApproval": false,
+    "migrationPlan": true,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": true
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0050-garment-business-rules.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-26-garment-lifecycle-business-rules.md",
+    "investigation": null,
+    "architectureDecision": "harness/control/decisions/ADR-2026-07-26-garment-lifecycle-business-rules.md",
+    "dependencyApproval": null,
+    "migrationPlan": "harness/control/plans/NEXO-0050-garment-business-rules.md",
+    "report": "harness/control/reports/2026-07-25/NEXO-0050-garment-business-rules-planning-session-001.md",
+    "implementation": null,
+    "qa": null,
+    "security": null,
+    "closeout": null,
+    "externalApproval": "harness/control/decisions/ADR-2026-07-26-garment-lifecycle-business-rules.md"
+  },
+  "verification": [
+    "pnpm --dir back test:unit",
+    "pnpm --dir back test:e2e",
+    "pnpm --dir back test",
+    "pnpm --dir back db:validate",
+    "pnpm --dir back build",
+    "pnpm --dir front test",
+    "pnpm --dir front build",
+    "node harness/control/scripts/control-engine.mjs gate --task NEXO-0050 --name build"
+  ]
+}

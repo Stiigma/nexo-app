@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0054",
+  "status": "active",
+  "updatedAt": "2026-07-29T16:30:00-07:00",
+  "requirements": {
+    "architectureDecision": false,
+    "dependencyApproval": false,
+    "migrationPlan": true,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": false,
+    "releaseReadiness": false
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0054-giveaway-participant-penalties.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-29-nexo-0054-giveaway-penalties.md",
+    "investigation": null,
+    "architectureDecision": null,
+    "dependencyApproval": null,
+    "migrationPlan": "harness/control/plans/NEXO-0054-giveaway-participant-penalties.md",
+    "report": null,
+    "implementation": "harness/control/implementations/IMPL-NEXO-0054-comment-scoped-pre-existing-followers.md",
+    "qa": null,
+    "security": null,
+    "closeout": null,
+    "externalApproval": null,
+    "releaseReadiness": null
+  },
+  "verification": [
+    "pnpm --dir back tsc --noEmit",
+    "pnpm --dir front tsc --noEmit",
+    "pnpm --dir back build",
+    "pnpm --dir front build",
+    "git diff --check"
+  ]
+}

@@ -1,0 +1,4 @@
+# Local env files with dev placeholders — never commit real credentials.
+.env
+.env.*
+!.env.example

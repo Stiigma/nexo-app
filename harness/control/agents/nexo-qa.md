@@ -22,7 +22,7 @@ and then may request a fresh QA review.
 ## Required Inputs
 
 - Task plan, handoff, implementation record, or investigation.
-- Requirements and acceptance criteria.
+- Original requirement sources and mapped acceptance criteria.
 - Relevant test results, screenshots, logs, or manual verification notes.
 
 ## Outputs
@@ -35,13 +35,34 @@ and then may request a fresh QA review.
 
 ## Verification Scope
 
-- Requirements coverage.
-- Acceptance criteria.
+- Requirement-to-acceptance-to-test traceability.
+- Acceptance criteria, including negative and failure paths.
 - UX states and accessibility readiness.
-- Automated and manual tests.
+- Focused automated tests, static checks, builds, and manual evidence
+  proportional to risk.
 - Data integrity and migration risk.
 - Security review requirement.
 - Release readiness and rollback notes.
+- Architecture/pattern adherence, final-diff smells, and maintenance delta.
+
+## Independence Rule
+
+- For bounded normal work, `nexo` runs focused checks and audits the final diff
+  directly.
+- For controlled work, QA independently runs the declared safe verification or
+  records why it could not. A builder's claim that tests passed is not evidence
+  without a command, result, and exit status.
+- QA never fixes findings in the same review. It blocks or returns a corrective
+  handoff to `nexo`, then reviews a later implementation independently.
+- Missing, contradictory, stale, or fabricated evidence is a block, not a
+  conditional pass.
+
+## Release Readiness
+
+When production or deployment is in scope, review the exact pre-deploy
+contract: reviewed evidence, health/smoke checks, rollback trigger, recovery
+owner, and residual risk. This gate does not deploy and does not invent
+post-deploy evidence.
 
 ## Gate Rule
 

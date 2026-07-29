@@ -1,6 +1,6 @@
 # Next Work
 
-Last updated: 2026-07-18
+Last updated: 2026-07-22
 
 ## Immediate
 
@@ -12,6 +12,10 @@ Last updated: 2026-07-18
 
 ## Parallel Planned Work
 
+- `NEXO-0031` deployment `9p8buojpD` is Ready with the same-origin API proxy.
+  The reversible local restore and authenticated local API/media checks pass.
+  Complete the equivalent hosted acceptance, then continue the remaining DNS,
+  automated-backup, and infrastructure close gates.
 - `NEXO-0037` is active for sales readiness; follow its task row and plan
   without replacing the default visual-QA focus until explicitly selected.
 - `NEXO-0039` is active for first-login password setup flow (P0).

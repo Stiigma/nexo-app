@@ -16,13 +16,9 @@ const REQUIRED_ARRAY_FIELDS = [
 
 const FULL_RESUME_SOURCES = [
   "AGENTS.md",
-  "harness/control/README.md",
-  "harness/control/WORKFLOW.md",
-  "harness/control/tasks.md",
-  "the active plan and latest report",
-  "today's journal under harness/control/journal/",
-  "harness/control/state/CURRENT.md",
-  "harness/control/state/NEXT.md",
+  "tier 1: the explicitly selected manifest and harness/control/work projection",
+  "tier 2: only that task's plan, handoff, latest report, and requirement sources",
+  "tier 3 for contradiction recovery only: README, WORKFLOW, tasks.md, journal, and legacy CURRENT.md/NEXT.md",
 ];
 
 export function sha256(text) {
@@ -127,9 +123,7 @@ function validateFocusShape(focus, now) {
     throw new Error("focus.maxAgeHours must be a positive integer");
   }
   const expiresAt = new Date(updatedAt.getTime() + focus.maxAgeHours * 3_600_000);
-  if (now.getTime() > expiresAt.getTime()) {
-    throw new Error(`focus is stale; it expired at ${expiresAt.toISOString()}`);
-  }
+  const isStale = now.getTime() > expiresAt.getTime();
   assertString(focus.objective, "objective");
   assertString(focus.nextAction, "nextAction");
   assertString(focus.expectedReport, "expectedReport");
@@ -151,7 +145,7 @@ function validateFocusShape(focus, now) {
       throw new Error(`focus.sourceHashes.${field} must be a SHA-256 digest`);
     }
   }
-  return { expiresAt };
+  return { expiresAt, isStale };
 }
 
 function assertContainsTaskId(text, taskId, sourceName) {
@@ -193,7 +187,7 @@ export async function compileSessionContext(options = {}) {
   } catch (error) {
     throw new Error(`focus record is invalid JSON: ${error.message}`);
   }
-  const { expiresAt } = validateFocusShape(focus, now);
+  const { expiresAt, isStale } = validateFocusShape(focus, now);
 
   const sourceFiles = Object.fromEntries(
     Object.entries(focus.sources).map(([name, relativePath]) => [
@@ -254,7 +248,13 @@ export async function compileSessionContext(options = {}) {
     freshness: {
       focusUpdatedAt: focus.updatedAt,
       expiresAt: expiresAt.toISOString(),
+      status: isStale ? "stale" : "current",
     },
+    warnings: isStale
+      ? [
+          `Focus expired at ${expiresAt.toISOString()}; validated status, links, and source hashes remain intact.`,
+        ]
+      : [],
     sources: focus.sources,
     sourceHashes,
     operatingRules: [
@@ -262,10 +262,10 @@ export async function compileSessionContext(options = {}) {
       "Run targeted checks while iterating and one full relevant acceptance gate.",
       "Preserve QA, security, type, schema, and test requirements.",
       "Do not commit, push, deploy, change external environments, or spend provider budget without explicit approval.",
-      "Create a new report or closeout; never rewrite historical evidence.",
+      "Record control-plane evidence only for milestones or controlled work; never rewrite historical evidence.",
     ],
     fallback: {
-      requiredWhen: "this packet is missing, expired, invalid, contradictory, or insufficient for the decision",
+      requiredWhen: "this packet is missing, invalid, contradictory, source-modified, or insufficient for the decision",
       read: FULL_RESUME_SOURCES,
     },
   };
@@ -325,6 +325,7 @@ export async function runSessionContextCli(argv, defaults = {}) {
         output: path.relative(process.cwd(), result.outputFile),
         chars: result.chars,
         estimatedTokens: result.estimatedTokens,
+        warnings: result.packet.warnings,
       })}\n`,
     );
   } catch (error) {

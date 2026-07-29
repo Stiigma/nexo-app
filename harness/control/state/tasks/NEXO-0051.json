@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0051",
+  "status": "active",
+  "updatedAt": "2026-07-26T10:20:00-07:00",
+  "requirements": {
+    "architectureDecision": true,
+    "dependencyApproval": false,
+    "migrationPlan": true,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": false
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0051-multi-photo-inventory.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-26-multi-photo-inventory.md",
+    "investigation": null,
+    "architectureDecision": "harness/control/plans/NEXO-0051-multi-photo-inventory.md",
+    "dependencyApproval": null,
+    "migrationPlan": "harness/control/plans/NEXO-0051-multi-photo-inventory.md",
+    "report": "harness/control/reports/2026-07-26/NEXO-0051-multi-photo-inventory-planning-session-001.md",
+    "implementation": null,
+    "qa": null,
+    "security": null,
+    "closeout": null,
+    "externalApproval": null
+  },
+  "verification": [
+    "pnpm --dir back test:unit",
+    "pnpm --dir back test:e2e",
+    "pnpm --dir back test",
+    "pnpm --dir back db:validate",
+    "pnpm --dir back build",
+    "pnpm --dir front test",
+    "pnpm --dir front build",
+    "node harness/control/scripts/control-engine.mjs gate --task NEXO-0051 --name build"
+  ]
+}

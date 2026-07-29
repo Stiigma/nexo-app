@@ -19,9 +19,17 @@
 
 - 
 
+## Engineering Review
+
+- Requirement/acceptance trace:
+- Architecture/technology:
+- Pattern:
+- Smell-gate result:
+- Maintenance delta:
+- Residual risk:
+
 ## Open Items
 
 - 
 
 ## Recommended Next Step
-

@@ -19,6 +19,19 @@
 
 - 
 
+## Engineering Decisions
+
+- Architecture/technology:
+- Pattern:
+- Relevant performance bound:
+- Maintenance delta:
+- Intentional debt and revisit trigger:
+
+## Smell Gate
+
+- Findings removed:
+- Intentional tradeoffs retained:
+
 ## Verification
 
 - 

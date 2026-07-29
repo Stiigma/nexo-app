@@ -15,6 +15,9 @@ data quality, security handoff, and release readiness.
 - Data integrity and migration risk.
 - Security review need and outcome.
 - Release, rollback, and support readiness.
+- Architecture and pattern decision adherence.
+- Final-diff smells and maintenance delta.
+- Independent command, result, and exit-status evidence.
 
 ## Output
 
@@ -33,3 +36,7 @@ that implementation evidence and verification are ready to inspect.
 If the change touches deployment, CI/CD, Kubernetes, secrets, auth, permissions,
 sensitive data, or data migration, confirm whether `nexo-security` review is
 required before close.
+
+QA must not repair the implementation it is reviewing. Missing or builder-only
+verification evidence blocks the review. When production is in scope, use the
+release-readiness template before a separately authorized deploy.

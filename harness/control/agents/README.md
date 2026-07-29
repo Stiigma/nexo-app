@@ -5,32 +5,33 @@ user-facing orchestrator; the other Nexo agents are internal technical roles
 for Codex, OpenCode, and humans. `.opencode/` files are adapters and must defer
 to these documents.
 
-## Universal Startup
+## Risk-Tiered Startup
 
-Every agent starts by reading `AGENTS.md`, running the current surface adapter
-(`.codex/scripts/` for ChatGPT/Codex or `.opencode/scripts/` for OpenCode), and
-reading that surface's validated `state/session-context.json` plus its matching
-canonical agent or skill. If compilation fails or the packet is insufficient,
-use the complete fallback source list in `AGENTS.md`.
+Every agent starts by reading `AGENTS.md` and classifying the request. `nexo`
+handles self-contained fast and normal work directly without context
+compilation. Registered, prolonged, controlled, or cross-agent work runs the
+current surface adapter and reads its validated packet. Expiry is a warning
+when status, links, and hashes remain valid; contradictions or changed sources
+require the complete fallback source list in `AGENTS.md`.
 
-Before changing files, identify the task ID, task status, plan or handoff,
-expected verification, and where evidence will be written.
+Before controlled work, identify the task ID, status, plan or handoff,
+verification, rollback, approvals, and milestone evidence.
 
 ## Model Reasoning Policy
 
 - Use low text verbosity: `gpt-5.6-terra` in ChatGPT/Codex and
   `openai/gpt-5.6-sol` in OpenCode.
-- Use `medium` for the `nexo` orchestrator, deterministic resume, binding,
-  summary, and compaction work.
-- Use `high` for normal specification, planning, design, build, QA, and infra.
-- Use `xhigh` for security and when architecture, cross-module data changes,
-  stubborn diagnosis, or a final high-risk review requires it.
+- Use `medium` by default, including Plan Mode and direct fast/normal work.
+- Reserve `high` specialists for complex or controlled specification,
+  planning, design, build, QA, and infrastructure.
+- Reserve `xhigh` for controlled security, architecture, cross-module data
+  changes, stubborn diagnosis, or a final high-risk review.
 - Keep deterministic tests and acceptance gates unchanged at every tier.
 
 ## Agent Selection
 
-All Nexo requests enter through `nexo`. It routes internally by the next
-required artifact:
+All Nexo requests enter through `nexo`. It handles fast and normal work
+directly, and routes complex or controlled work by the next required artifact:
 
 | Request type | Specialist |
 | --- | --- |
@@ -43,7 +44,8 @@ required artifact:
 | Secrets, auth, permissions, privacy, data exposure, security posture | `nexo-security` |
 
 When multiple roles apply, `nexo` invokes the narrowest specialist that can
-produce the next artifact, validates the result, and then selects the next role.
+produce the next artifact, but only after the delegation consent contract
+below. It validates the result before selecting another role.
 
 ## Delegation Rules
 
@@ -60,22 +62,34 @@ Only `nexo` delegates Nexo work:
    criterios de aceptación y verificación conocidos.
 3. Specialists must not delegate; they return evidence to `nexo`.
 4. `nexo` verifies delegated work before continuing or reporting completion.
-5. Delegation does not remove `nexo`'s responsibility to update live state
-   (tasks.md, README.md, state/CURRENT.md, state/NEXT.md, journal).
-6. Commit, push, deploy, o cambios en el entorno externo siempre requieren
+5. Before invocation, `nexo` discloses one specialist's purpose, exact model,
+   reasoning effort, and shared ChatGPT/Codex agentic-quota consumption, then
+   waits for explicit approval.
+6. An explicit "usa un subagente" request approves one delegation after that
+   disclosure. A handoff or next-role assignment is not approval.
+7. Each approval is single-use and does not authorize follow-on delegation.
+8. Delegation does not remove `nexo`'s responsibility for required milestone
+   evidence. README/CURRENT/NEXT change only when the actual focus changes.
+9. Commit, push, deploy, o cambios en el entorno externo siempre requieren
    confirmación explícita del usuario, incluso cuando son ejecutados por un
    subagente delegado.
+
+A handoff is an artifact created by `nexo`; delegation is a separate model
+session with its own context and consumption. Codex delegates with Terra
+`medium` and a one-thread cap. OpenCode keeps Sol `high`/`xhigh` specialists
+behind `task: ask`; OpenAI OAuth draws from the shared agentic quota, while an
+API key would be billed separately.
 
 ## Common Contracts
 
 - Keep `harness/control/` canonical.
-- Use stable task IDs such as `NEXO-0004`.
+- Use stable task IDs such as `NEXO-0004` for controlled, prolonged, or
+  cross-agent work.
 - Do not overwrite historical reports, closeouts, or journals.
-- Every non-trivial plan-to-build transition uses a handoff in
+- Controlled, prolonged, or cross-agent plan-to-build transitions use a handoff in
   `harness/control/handoffs/HOFF-YYYY-MM-DD-slug.md`.
-- Every completed work block writes a report or closeout.
-- Code or config changes write an implementation record when the change needs
-  future operational context.
+- Reports, closeouts, journals, and implementation records are milestone
+  evidence, not per-session requirements.
 - Durable infrastructure conventions require an ADR.
 - Commit, push, deploy, or external environment changes require explicit user
   confirmation.
@@ -93,15 +107,3 @@ Only `nexo` delegates Nexo work:
 - `nexo-qa.md` - QA and release readiness reviewer.
 - `nexo-infra.md` - infrastructure executor with strict guardrails.
 - `nexo-security.md` - security reviewer and threat-modeling agent.
-
-## FIAD Agent Files
-
-FIAD ecosystem work uses the same operating contract with `fiad-*` role names:
-
-- `fiad-plan.md` - non-mutating FIAD planner.
-- `fiad-build.md` - FIAD implementation executor.
-- `fiad-spec.md` - FIAD requirements engineer.
-- `fiad-design.md` - FIAD UX/UI planner.
-- `fiad-qa.md` - FIAD QA and readiness reviewer.
-- `fiad-infra.md` - FIAD infrastructure executor.
-- `fiad-security.md` - FIAD security reviewer.

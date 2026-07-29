@@ -9,6 +9,8 @@ import { InventoryPage } from "@/features/inventory/views/InventoryPage";
 import { UsersPage } from "@/features/admin/users/views/UsersPage";
 import { CapturePage } from "@/features/capture/views/CapturePage";
 import { DashboardPage } from "@/features/dashboard/views/DashboardPage";
+import { GiveawaysPage } from "@/features/giveaways/views/GiveawaysPage";
+import { GiveawayDetailPage } from "@/features/giveaways/views/GiveawayDetailPage";
 
 /**
  * Shared layout:  user must be authenticated (any role).
@@ -90,6 +92,8 @@ export function AppRouter() {
               path="admin"
               element={<Navigate to="/catalogs" replace />}
             />
+            <Route path="admin/giveaways" element={<GiveawaysPage />} />
+            <Route path="admin/giveaways/:id" element={<GiveawayDetailPage />} />
             <Route path="admin/users" element={<UsersPage />} />
             <Route
               path="admin/reports"

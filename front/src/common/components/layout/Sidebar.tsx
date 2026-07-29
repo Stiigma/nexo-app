@@ -6,6 +6,7 @@ import {
   Users,
   BarChart3,
   Wrench,
+  Gift,
   LogOut,
   Home,
   KeyRound
@@ -23,6 +24,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number }>> = {
   users: Users,
   "bar-chart-3": BarChart3,
   wrench: Wrench,
+  gift: Gift,
   "key-round": KeyRound
 };
 

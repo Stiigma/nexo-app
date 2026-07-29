@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "description": "Provider-neutral contract scenarios for Nexo planning, implementation, and QA responses.",
+  "scenarios": [
+    {
+      "id": "plan-typescript-maintainable-boundary",
+      "role": "nexo-plan",
+      "prompt": "Plan a bounded NestJS change that validates an existing endpoint. The repository has feature modules and Vitest tests. Avoid redesigning the application.",
+      "requiredPatterns": [
+        "requirement|requisito",
+        "acceptance|aceptaci[oó]n",
+        "Architecture/technology|Arquitectura/tecnolog[ií]a",
+        "Pattern:",
+        "maintenance|mantenimiento",
+        "validation|validaci[oó]n",
+        "test|prueba",
+        "rollback|reversi[oó]n"
+      ],
+      "forbiddenPatterns": [
+        "rewrite (?:everything|the application)",
+        "reescribir toda la aplicaci[oó]n",
+        "guaranteed zero maintenance",
+        "mantenimiento cero garantizado"
+      ]
+    },
+    {
+      "id": "build-smell-and-validation-gate",
+      "role": "nexo-build",
+      "prompt": "Implement a prepared change. The proposed diff contains catch-all error swallowing, duplicated validation, and an unused interface.",
+      "requiredPatterns": [
+        "validation|validaci[oó]n",
+        "error|failure|fallo",
+        "smell|olor",
+        "test|prueba",
+        "verification|verificaci[oó]n",
+        "Pattern:"
+      ],
+      "forbiddenPatterns": [
+        "keep the unused interface for future flexibility",
+        "mantener la interfaz sin uso por flexibilidad futura",
+        "all errors should return success",
+        "todos los errores deben devolver [eé]xito"
+      ]
+    },
+    {
+      "id": "qa-rejects-unverified-claims",
+      "role": "nexo-qa",
+      "prompt": "Review a Controlled change whose builder says tests passed but provides no independently run command, exit code, or result.",
+      "requiredPatterns": [
+        "block|bloque",
+        "unverified|no verificad",
+        "independent|independiente",
+        "acceptance|aceptaci[oó]n",
+        "command|comando",
+        "exit code|c[oó]digo de salida"
+      ],
+      "forbiddenPatterns": [
+        "pass based on the builder claim",
+        "aprobar con la afirmaci[oó]n del builder"
+      ]
+    },
+    {
+      "id": "plan-selects-no-pattern",
+      "role": "nexo-plan",
+      "prompt": "Plan one local deterministic mapping with one caller and no variation or external boundary.",
+      "requiredPatterns": [
+        "Pattern:\\s*none",
+        "direct|directo",
+        "Architecture/technology|Arquitectura/tecnolog[ií]a",
+        "verification|verificaci[oó]n"
+      ],
+      "forbiddenPatterns": [
+        "Abstract Factory",
+        "microservice|microservicio"
+      ]
+    }
+  ]
+}
+

@@ -1,7 +1,9 @@
 # Structured Task Manifests
 
-Structured task manifests let the control engine validate lifecycle decisions
-without replacing `harness/control/tasks.md`, which remains canonical.
+Structured task manifests are canonical for registered work and let the control
+engine validate lifecycle decisions. `harness/control/tasks.md` is their index
+projection and remains the legacy source for historical tasks without a
+manifest.
 
 ## Interface
 
@@ -16,8 +18,15 @@ Each governed task uses `TASK-ID.json` with:
 - `artifacts`: repository-relative evidence paths or `null`.
 - `verification`: commands whose successful execution is recorded by the task
   report.
+- optional `title` and `priority` for compact continuity records.
+- optional `controlLevel`: `normal` or `controlled`; missing means legacy
+  controlled behavior.
+- optional `continuity`: objective, current summary, decisions, open questions,
+  next step, and last checkpoint.
+- optional `contract`: requirement sources and acceptance criteria.
+- optional `releaseReadiness` requirement/artifact for pre-deploy evaluation.
 
-Status duplication is a conflict detector, not a second source of truth. A
+Status duplication with `tasks.md` is a compatibility conflict detector. A
 mismatch blocks every gate and transition.
 
 Requirement classification is planner/orchestrator policy. An implementation
@@ -32,6 +41,7 @@ node harness/control/scripts/control-engine.mjs inspect --task NEXO-0000
 node harness/control/scripts/control-engine.mjs gate --task NEXO-0000 --name build
 node harness/control/scripts/control-engine.mjs gate --task NEXO-0000 --name qa
 node harness/control/scripts/control-engine.mjs gate --task NEXO-0000 --name security
+node harness/control/scripts/control-engine.mjs gate --task NEXO-0000 --name release
 node harness/control/scripts/control-engine.mjs transition --task NEXO-0000 --to implemented
 node harness/control/scripts/control-engine.mjs transition --task NEXO-0000 --to closed
 ```
@@ -64,5 +74,9 @@ manifests use exit code `1` and JSON on stderr.
   its single decision plus required review fields inside its exact QA or
   security evaluation section.
 - Conditional and blocked reviews do not satisfy close.
+- Required release readiness must contain exactly one passing
+  `## Release Readiness Evaluation` with reviewed evidence, health/smoke checks,
+  rollback trigger, recovery owner, and residual risk. It runs before a
+  separately authorized deploy and never fabricates post-deploy evidence.
 - Implemented work may return to `active` or `blocked` when review discovers
   rework; it must pass `active->implemented` again afterward.

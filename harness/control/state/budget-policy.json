@@ -12,9 +12,12 @@
   },
   "behavior": {
     "request_handoff_on_soft": true,
-    "abort_on_hard": true,
+    "abort_on_hard": false,
     "minimum_handoff_margin_usd": 0.05,
-    "abort_when_handoff_margin_exhausted": true
+    "abort_when_handoff_margin_exhausted": false
+  },
+  "compact": {
+    "inject_budget_state": false
   },
   "paths": {
     "ledger": ".opencode/state/budget-ledger.json",

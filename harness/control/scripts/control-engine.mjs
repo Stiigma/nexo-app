@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 import { parseTaskRows, taskLinkMatches } from "./build-session-context.mjs";
 
 const STATUSES = new Set(["planned", "active", "implemented", "blocked", "closed"]);
-const GATES = new Set(["build", "qa", "security", "close"]);
+const GATES = new Set(["build", "qa", "security", "release", "close"]);
 const REQUIREMENT_KEYS = [
   "architectureDecision",
   "dependencyApproval",
@@ -16,6 +16,7 @@ const REQUIREMENT_KEYS = [
   "qaReview",
   "securityReview",
   "externalApproval",
+  "releaseReadiness",
 ];
 const ARTIFACT_KEYS = [
   "plan",
@@ -30,6 +31,7 @@ const ARTIFACT_KEYS = [
   "security",
   "closeout",
   "externalApproval",
+  "releaseReadiness",
 ];
 const TRANSITIONS = new Set([
   "planned->active",
@@ -42,7 +44,7 @@ const TRANSITIONS = new Set([
   "implemented->closed",
 ]);
 const ARTIFACT_PREFIXES = {
-  plan: ["harness/control/plans/"],
+  plan: ["harness/control/plans/", "harness/control/work/"],
   handoff: ["harness/control/handoffs/"],
   investigation: ["harness/control/investigations/"],
   architectureDecision: ["harness/control/plans/", "harness/control/decisions/", "docs/adr/"],
@@ -54,6 +56,7 @@ const ARTIFACT_PREFIXES = {
   security: ["harness/control/security/"],
   closeout: ["harness/control/closeouts/"],
   externalApproval: ["harness/control/reports/", "harness/control/decisions/"],
+  releaseReadiness: ["harness/control/reports/"],
 };
 const PRE_BUILD_EVALUATIONS = {
   architectureDecision: {
@@ -89,6 +92,17 @@ const REVIEW_EVALUATIONS = {
     evaluationHeading: "Security Decision Evaluation",
     decision: "approved",
     requiredFields: ["Reviewed evidence", "Findings", "Residual risk"],
+  },
+  release: {
+    evaluationHeading: "Release Readiness Evaluation",
+    decision: "pass",
+    requiredFields: [
+      "Reviewed evidence",
+      "Health and smoke checks",
+      "Rollback trigger",
+      "Recovery owner",
+      "Residual risk",
+    ],
   },
 };
 
@@ -139,6 +153,7 @@ function validateManifest(manifest, taskId) {
     }
   }
   for (const key of REQUIREMENT_KEYS) {
+    if (key === "releaseReadiness" && manifest.requirements[key] === undefined) continue;
     if (typeof manifest.requirements[key] !== "boolean") {
       throw new ControlEngineInputError(`manifest.requirements.${key} must be boolean`);
     }
@@ -153,9 +168,48 @@ function validateManifest(manifest, taskId) {
   }
   for (const key of ARTIFACT_KEYS) {
     const value = manifest.artifacts[key];
+    if (key === "releaseReadiness" && value === undefined) continue;
     if (value !== null && (typeof value !== "string" || value.trim() === "")) {
       throw new ControlEngineInputError(`manifest.artifacts.${key} must be a relative path or null`);
     }
+  }
+  if (manifest.controlLevel !== undefined && !["normal", "controlled"].includes(manifest.controlLevel)) {
+    throw new ControlEngineInputError("manifest.controlLevel must be normal or controlled");
+  }
+  if (manifest.title !== undefined) assertString(manifest.title, "manifest.title");
+  if (manifest.priority !== undefined && !/^P[0-3]$/.test(manifest.priority)) {
+    throw new ControlEngineInputError("manifest.priority must be P0, P1, P2, or P3");
+  }
+  if (manifest.continuity !== undefined) {
+    if (!manifest.continuity || typeof manifest.continuity !== "object" || Array.isArray(manifest.continuity)) {
+      throw new ControlEngineInputError("manifest.continuity must be an object");
+    }
+    for (const key of ["objective", "summary", "nextStep"]) {
+      assertString(manifest.continuity[key], `manifest.continuity.${key}`);
+    }
+    for (const key of ["decisions", "openQuestions"]) {
+      if (!Array.isArray(manifest.continuity[key]) || manifest.continuity[key].some((value) => typeof value !== "string" || !value.trim())) {
+        throw new ControlEngineInputError(`manifest.continuity.${key} must be an array of non-empty strings`);
+      }
+    }
+  }
+  if (manifest.contract !== undefined) {
+    if (!manifest.contract || typeof manifest.contract !== "object" || Array.isArray(manifest.contract)) {
+      throw new ControlEngineInputError("manifest.contract must be an object");
+    }
+    for (const key of ["requirementSources", "acceptanceCriteria"]) {
+      if (!Array.isArray(manifest.contract[key]) || manifest.contract[key].some((value) => typeof value !== "string" || !value.trim())) {
+        throw new ControlEngineInputError(`manifest.contract.${key} must be an array of non-empty strings`);
+      }
+    }
+  }
+  const releaseRequired = manifest.requirements.releaseReadiness === true;
+  const releaseArtifact = manifest.artifacts.releaseReadiness ?? null;
+  if (releaseRequired && !releaseArtifact) {
+    throw new ControlEngineInputError("manifest requires a releaseReadiness artifact");
+  }
+  if (!releaseRequired && releaseArtifact) {
+    throw new ControlEngineInputError("manifest releaseReadiness artifact requires its requirement flag");
   }
   if (
     !Array.isArray(manifest.verification) ||
@@ -648,6 +702,23 @@ async function checkClose(context) {
   } else {
     addCheck(context.decision, "requirement:securityReview", true, "securityReview is explicitly not required");
   }
+  if (context.manifest.requirements.releaseReadiness) {
+    await checkArtifact(context, "releaseReadiness", REVIEW_EVALUATIONS.release);
+  } else {
+    addCheck(context.decision, "requirement:releaseReadiness", true, "releaseReadiness is explicitly not required");
+  }
+}
+
+async function checkRelease(context) {
+  checkStatus(context, ["active", "implemented"]);
+  await checkPreBuildRequirements(context);
+  await checkImplementationEvidence(context);
+  if (!context.manifest.requirements.releaseReadiness) {
+    addCheck(context.decision, "requirement:releaseReadiness", false, "release readiness is not required by the task");
+    addBlocker(context.decision, "RELEASE_NOT_REQUIRED", "release gate requires requirements.releaseReadiness=true");
+    return;
+  }
+  await checkArtifact(context, "releaseReadiness", REVIEW_EVALUATIONS.release);
 }
 
 export async function inspectTask(options) {
@@ -668,6 +739,7 @@ export async function evaluateGate(options) {
   });
   if (options.gate === "build") await checkBuild(context);
   else if (options.gate === "qa" || options.gate === "security") await checkReview(context);
+  else if (options.gate === "release") await checkRelease(context);
   else await checkClose(context);
   return context.decision;
 }

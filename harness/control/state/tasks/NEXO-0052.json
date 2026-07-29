@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "taskId": "NEXO-0052",
+  "status": "implemented",
+  "updatedAt": "2026-07-29T17:30:00-07:00",
+  "requirements": {
+    "architectureDecision": true,
+    "dependencyApproval": false,
+    "migrationPlan": false,
+    "qaReview": true,
+    "securityReview": true,
+    "externalApproval": false,
+    "releaseReadiness": false
+  },
+  "artifacts": {
+    "plan": "harness/control/plans/NEXO-0052-pragmatic-agent-engineering-continuity.md",
+    "handoff": "harness/control/handoffs/HOFF-2026-07-29-pragmatic-agent-engineering-continuity.md",
+    "investigation": null,
+    "architectureDecision": "harness/control/decisions/NEXO-0052-pragmatic-agent-engineering-continuity.md",
+    "dependencyApproval": null,
+    "migrationPlan": null,
+    "report": "harness/control/reports/2026-07-29/NEXO-0052-pragmatic-agent-engineering-continuity-session-001.md",
+    "implementation": "harness/control/implementations/IMPL-NEXO-0052-pragmatic-agent-engineering-continuity.md",
+    "qa": "harness/control/reports/2026-07-29/NEXO-0052-pragmatic-agent-engineering-continuity-qa-001.md",
+    "security": "harness/control/security/SEC-NEXO-0052-pragmatic-agent-engineering-continuity-review-001.md",
+    "closeout": null,
+    "externalApproval": null,
+    "releaseReadiness": null
+  },
+  "verification": [
+    "node --check harness/control/scripts/nexo-work.mjs",
+    "node --check harness/control/scripts/control-engine.mjs",
+    "node --check harness/control/scripts/evaluate-agent-response.mjs",
+    "node --test .opencode/tests/*.test.js",
+    "node --test .codex/tests/*.test.js",
+    "node harness/control/scripts/nexo-work.mjs doctor",
+    "node .opencode/scripts/opencode2-doctor.mjs",
+    "git diff --check"
+  ]
+}

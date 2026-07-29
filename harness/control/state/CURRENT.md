@@ -1,6 +1,6 @@
 # Current State
 
-Last updated: 2026-07-18
+Last updated: 2026-07-22
 
 ## Default Focus
 
@@ -12,6 +12,17 @@ Last updated: 2026-07-18
 - Migration and technical verification are complete. User evidence shows an
   authenticated admin session and catalog `500` responses on the port-5173
   runner; exact authenticated reproduction precedes the remaining visual QA.
+
+## User-Selected Parallel Work
+
+- `NEXO-0031` deployed the Vercel/ngrok same-origin proxy after explicit user
+  authorization. Deployment `9p8buojpD` is Ready; the production bundle uses
+  `/api/v1`, Vercel forwards to the operator-controlled `BACKEND_ORIGIN`, and
+  unauthenticated API requests return backend JSON without `ERR_NGROK_6024`.
+  The verified local backup restore now serves 78 items/photos and local
+  authenticated login, catalog, inventory, and protected-photo checks pass.
+  Hosted authenticated acceptance and the broader infrastructure gates remain
+  pending.
 
 ## Agent Workflow
 

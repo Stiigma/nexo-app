@@ -9,6 +9,8 @@ back here instead of redefining behavior.
 | Skill | Purpose |
 | --- | --- |
 | `nexo-memory-resume.md` | Resume from the control-plane memory. |
+| `nexo-engineering.md` | Apply architecture, pattern, maintenance, performance, and smell decisions proportionately. |
+| `nexo-node-typescript.md` | Apply the engineering contract to NestJS, React, Prisma, and TypeScript tests. |
 | `nexo-start-task.md` | Create or activate a task. |
 | `nexo-log-work.md` | Record meaningful work and decisions. |
 | `nexo-handoff.md` | Create implementation-ready handoffs. |
@@ -20,12 +22,6 @@ back here instead of redefining behavior.
 | `nexo-security-review.md` | Perform security review and risk recording. |
 | `nexo-design-spec.md` | Produce UX/UI design specs for visible work. |
 | `nexo-infra-guardrails.md` | Apply infrastructure and deployment guardrails. |
-| `fiad-memory-resume.md` | Resume from FIAD ecosystem context. |
-| `fiad-log-work.md` | Record FIAD work and decisions. |
-| `fiad-handoff.md` | Create FIAD implementation-ready handoffs. |
-| `fiad-close-task.md` | Close FIAD tasks with evidence. |
-| `fiad-qa-review.md` | Review FIAD readiness and acceptance. |
-| `fiad-security-review.md` | Review FIAD secrets, auth, permissions, and exposure. |
 
 ## Common Rule
 

@@ -49,6 +49,29 @@
 
 - 
 
+## Requirement Trace
+
+| Requirement source | Requirement | Acceptance criterion | Planned evidence |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
+## Architecture And Boundaries
+
+- Current architecture and dependency direction:
+- Boundary/contracts/data:
+- Validation and failure behavior:
+- Non-functional constraints:
+- Architecture/technology:
+- Pattern:
+- Compatibility, rollout, and rollback:
+
+## Maintenance Delta
+
+- Ongoing responsibility:
+- Owner:
+- Manual/operational work:
+- Future abstraction trigger:
+
 ## Required Tests
 
 - Unit:

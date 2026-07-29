@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { ShoppingCart, PackageSearch, BarChart3, List, Users, Wrench } from "lucide-react";
+import { ShoppingCart, PackageSearch, BarChart3, List, Users, Wrench, Gift } from "lucide-react";
 import { useAuthStore } from "@/common/stores/auth-store";
 import { allowedRoutesForRole, type RouteConfig } from "@/common/utils/access";
 import { cn } from "@/common/lib/utils";
@@ -11,6 +11,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number }>> = {
   users: Users,
   "bar-chart-3": BarChart3,
   wrench: Wrench,
+  gift: Gift,
 };
 
 function renderIcon(route: RouteConfig) {
