@@ -25,7 +25,10 @@
     "prune": true,
     "tail_turns": 4,
     "preserve_recent_tokens": 24000,
-    "reserved": 12000
+    "reserved": 12000,
+    "keep": {
+      "tokens": 24000
+    }
   },
   "agent": {
     "build": {
@@ -276,5 +279,16 @@
       "agent": "fiad-qa",
       "template": "Compatibility alias: use fiad:doctor. Verify FIAD control-plane continuity, Project Profiles, state JSON, adapters, reports, and closeouts."
     }
-  }
+  },
+  "experimental": {
+    "subagent_depth": 1
+  },
+  "plugins": [
+    {
+      "package": "@plannotator/opencode@0.27.14",
+      "options": {
+        "workflow": "manual"
+      }
+    }
+  ]
 }

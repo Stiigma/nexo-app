@@ -44,6 +44,7 @@ test("pins one manual visual dependency and native bounded context controls", as
   assert.deepEqual(config.tool_output, { max_lines: 800, max_bytes: 32768 });
   assert.deepEqual(config.compaction, {
     auto: true,
+    keep: { tokens: 24000 },
     prune: true,
     tail_turns: 4,
     preserve_recent_tokens: 24000,
@@ -83,33 +84,66 @@ test("doctor detects the two CLIs and approved project controls deterministicall
   await fs.mkdir(bin);
   for (const name of ["opencode", "opencode2"]) {
     const executable = path.join(bin, name);
-    await fs.writeFile(executable, "#!/bin/sh\nprintf 'synthetic-version\\n'\n");
+    await fs.writeFile(executable, "#!/bin/sh\nprintf 'opencode v2.0.2\\n'\n");
     await fs.chmod(executable, 0o755);
   }
   await fs.writeFile(path.join(temporary, ".opencode/package.json"), JSON.stringify({
-    dependencies: { "@opencode-ai/plugin": "1.17.13" },
+    dependencies: { "@opencode/plugin": "2.0.2" },
+  }));
+  await fs.writeFile(path.join(temporary, ".opencode/opencode.json"), JSON.stringify({
+    mcp: {
+      vercel: {
+        environment: {
+          VERCEL_API_TOKEN: "{env:VERCEL_API_TOKEN}",
+        },
+      },
+    },
   }));
   await fs.writeFile(path.join(temporary, "opencode.json"), JSON.stringify({
     model: "openai/gpt-5.6-sol",
     default_agent: "nexo",
     subagent_depth: 1,
+    experimental: { subagent_depth: 1 },
     share: "disabled",
     plugin: [["@plannotator/opencode@0.23.1", { workflow: "manual" }]],
+    plugins: [{ package: "@plannotator/opencode@0.27.14", options: { workflow: "manual" } }],
     tool_output: { max_lines: 800, max_bytes: 32768 },
-    compaction: { prune: true, tail_turns: 4 },
+    compaction: { auto: true, keep: { tokens: 24000 }, prune: true, tail_turns: 4, preserve_recent_tokens: 24000, reserved: 12000 },
   }));
   await fs.writeFile(path.join(temporary, "tui.json"), JSON.stringify({
     plugin: ["./.opencode/tui/nexo-status.tsx"],
     attention: { enabled: true, notifications: true },
   }));
+  const v2Files = [
+    ".opencode/lib/v2-plugin-adapter.mjs",
+    ".opencode/plugins/nexo-productivity-v2.js",
+    ".opencode/plugins/nexo-budget-guard-v2.js",
+    ".opencode/plugins/isyte-ops-v2.js",
+    ".opencode/plugins/nexo-status/index.js",
+    ".opencode/plugins/nexo-status/tui.tsx",
+    ".opencode/plugins/nexo-status/package.json",
+    ".opencode/optional-plugins/graphify-v2.js",
+  ];
+  const v1Files = [
+    ".opencode/plugins/nexo-productivity.mjs",
+    ".opencode/plugins/nexo-budget-guard.mjs",
+    ".opencode/plugins/isyte-ops.mjs",
+    ".opencode/tui/nexo-status.tsx",
+    ".opencode/optional-plugins/graphify.js",
+  ];
+  for (const relative of [...v2Files, ...v1Files]) {
+    await fs.mkdir(path.dirname(path.join(temporary, relative)), { recursive: true });
+    await fs.writeFile(path.join(temporary, relative), "// synthetic\n");
+  }
 
   const { inspectRuntime } = await import("../scripts/opencode2-doctor.mjs");
   const result = await inspectRuntime(temporary, { path: bin });
   assert.equal(result.ok, true);
-  assert.equal(result.commands.opencode2.version, "synthetic-version");
-  assert.equal(result.pluginApi, "1.17.13");
+  assert.equal(result.commands.opencode2.version, "opencode v2.0.2");
+  assert.equal(result.pluginApi, "2.0.2");
   assert.deepEqual(result.blockers, []);
-  assert.deepEqual(result.warnings, []);
+  assert.ok(result.warnings.includes("Graphify is available locally but is not loaded by default"));
+  assert.ok(!result.warnings.some((warning) => warning.includes("compaction")));
 });
 
 test("serves read-only status on an explicit non-product loopback port", async (t) => {

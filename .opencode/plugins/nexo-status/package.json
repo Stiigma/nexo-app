@@ -1,0 +1,11 @@
+{
+  "name": "nexo-status",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "NEXO budget/focus footer as an OpenCode V2 CLI plugin",
+  "exports": {
+    ".": "./index.js",
+    "./tui": "./tui.tsx"
+  }
+}
